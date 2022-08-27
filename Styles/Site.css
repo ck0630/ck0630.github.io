@@ -1,0 +1,170 @@
+﻿*
+{
+  padding:0;
+  margin:0
+}
+.style1
+{
+  width: 80pt;
+  height: 80pt
+}
+.style2
+{
+  width: 75%;
+  height: auto
+}
+.style3
+{
+  width: 65.4%;
+  height: auto;
+  border: 0;
+  max-width: 100pt;
+  border-radius: 11px;
+  box-shadow: 3px 2px 6px rgba(0, 0, 0, .4)
+}
+.style3:hover
+{
+  box-shadow:6px 4px 12px rgb(0, 0, 0, .4);
+}
+.style3:active
+{
+  box-shadow:6px 4px 12px rgb(255, 0, 255, .4);
+}
+span
+{
+  /*personalize*/
+  color:#1C1C1C;
+  text-shadow:none;
+  font-weight:bold;
+  font-size:13.75px
+}
+html, body
+{
+  border: none;
+  width:100%;
+  height:100%
+}
+body
+{
+  background-color:#64D3EF
+}
+.ui-page
+{
+  background-color:#64D3EF;
+  background-size: 100% 100%;
+  background-repeat: no-repeat
+}
+.page
+{
+  border: none
+}
+.ui-btn-inner
+{
+  text-align: center
+}
+br
+{
+  line-height: 150%
+}
+td
+{
+  text-align: center;
+  width: 25%
+}
+.ui-badge-container
+{
+  position: relative
+}
+.badge
+{
+  background: #BA070F;
+  color: #fff;
+  padding: 1pt 7pt;
+  position: absolute;
+  right: 4pt;
+  top: -222pt;
+  z-index: 999;
+  border-radius: .8em;
+  border: 2pt solid #fff;
+  font-weight: bold
+}
+table
+{
+  width: 98%;
+  height: auto;
+  top: 0;
+  margin-left: auto;
+  margin-right: auto
+}
+td
+{
+  padding-left: 0;
+  padding-right: 0%;
+  padding-top: 3.2%;
+  padding-bottom: 3.2%
+}
+.footer
+{
+  width: 100%;
+  border-width: 0;
+  top:40pt;
+  z-index:9999
+}
+.header
+{
+  position:absolute;
+  top:0;
+  width:100%;
+  margin:0 0 0 0;
+  padding:0.15em 0 0 0;
+  /*personalize*/
+        background-color:#64D3EF;
+  /*background-image:linear-gradient( 180deg, #AAE6FE , #2C3965 );
+  */
+        /*background-image:linear-gradient( 180deg, #FFEAD8 , #473700 );
+  */
+        /*background-image:linear-gradient( 90deg, #0752D1 , #4DFE4C );
+  */
+        /*background-image:linear-gradient( 45deg, #A9FED5 , #004701 );
+  */
+        border-width:0 0;
+  /*personalize*/
+        /*color:Black;
+  */
+        color:#000078;
+  vertical-align:middle;
+  text-align:center;
+  text-shadow:none;
+  z-index:9999
+}
+.header_blank
+{
+  top:0;
+  width:100%;
+  margin:0;
+  padding:0;
+  border-width:0 0
+}
+.content
+{
+  position:relative
+}
+#menu_btn
+{
+  position: fixed;
+  right:15px;
+  top:15px;
+  text-decoration:none;
+  z-index:99999;
+  height:auto;
+  display:none
+}
+@media screen and (orientation: landscape) and (min-width:500px)
+{
+  .content
+  {
+    width:80.9%;
+    margin:0 auto
+  }
+}
+
