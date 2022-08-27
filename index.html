@@ -1,0 +1,164 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" href="Images/weather.png">
+    <title>web</title>
+    <link rel="stylesheet" type="text/css" href="Styles/Site.css">
+    <script src="Scripts/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="Scripts/myscript.js" type="text/javascript"></script>
+  <style type="text/css">
+  </style>
+
+  <script type="text/javascript">
+    function setIconSize()
+    {
+      var w = $('.style3').width();
+      $('.style3').css('border-radius', w * 0.2 + 'px');
+      $('span').css('font-size', w * 0.25 + 'px');
+      $('#menu_btn').css('width', w * 0.3 + 'px')
+    }
+    $(document).ready(function ()
+    {
+      onImageReady(".content img", setIconSize);
+      
+    });
+
+    $(window).resize(function ()
+    {
+      setContentH();
+      setIconSize()
+    }
+    );
+    function setContentH()
+    {
+      $("#content").height($(top).height())
+    }
+  </script>
+</head>
+
+<body>
+  <h1 class="header"><a href=".?_=clear_cache" style="text-decoration: none;">web</a></h1>
+  <h1 class="header_blank" id="header_blank">&nbsp;</h1>
+  <div class="content" id="content1">
+    <table>
+      <tr>
+        <td>
+          <a href='#' onclick="location.href='Web/w03/weather.htm'; return false;"><img class='style3' src='Images/weather.png' /></a>
+          <br />
+          <center>
+            <a href='#' style="text-decoration: none" onclick="win_dir(); return false;">
+              <script>
+                function win_dir()
+                {
+                  if (is_android) 
+                    location.href='https://www.cwb.gov.tw/V8/C/W/Town/Town.html?TID=6300600';
+                  else  
+                    location.href='https://www.google.com/search?q=%22%E5%8F%B0%E5%8C%97%E5%B8%82%E5%A4%A7%E5%90%8C%E5%8D%80%E5%BB%BA%E5%8A%9F%E9%87%8C+%E9%A2%A8%E5%90%91%22&rlz=1C1GCEU_zh-TWTW839TW839&sxsrf=ALiCzsaP27bW8MU7t3OINHD5B_Y0Xmlz1w%3A1654579009302&ei=Qd-eYsqNEvyK2roP1fW40Aw&ved=0ahUKEwiKsuiQy5r4AhV8hVYBHdU6DsoQ4dUDCA4&uact=5&oq=%22%E5%8F%B0%E5%8C%97%E5%B8%82%E5%A4%A7%E5%90%8C%E5%8D%80%E5%BB%BA%E5%8A%9F%E9%87%8C+%E9%A2%A8%E5%90%91%22&gs_lcp=Cgdnd3Mtd2l6EAM6AggmOgYIABAeEAVKBAhBGAFKBAhGGABQtwZY0y5gvjVoAnAAeACAAXiIAesEkgEDMy4zmAEAoAEBwAEB&sclient=gws-wiz';
+                }
+              </script>
+              <span>一周天氣</span>
+            </a>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='Web/w03/weather2.htm'; return false;"><img class='style3' src='Images/weather2.png' /></a>
+          <br />
+          <center>
+            <span>衛星雲圖</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='Web/w01/index.html'; return false;"><img class='style3' src='Images/video.png' /></a>
+          <br />
+          <center>
+            <span>影像</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='Web/w03/computer_king.htm'; return false;"><img class='style3' src='Images/computer_king.jpg' /></a>
+          <br />
+          <center>
+            <span>電腦王</span>
+          </center>
+        </td>
+        <td class='tvtd'>
+          <a href='#' onclick="location.href='https://www.google.com'; return false;"><img class='style3' src='https://pngimg.com/uploads/chrome_logo/chrome_logo_PNG5.png' /></a>
+          <br />
+          <center>
+            <span>Google</span>
+          </center>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href='#' onclick="location.href='Web/w03/news2.htm'; return false;"><img class='style3' src='Images/news.png' /></a>
+          <br />
+          <center>
+            <span>新聞</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='https://env.healthinfo.tw/air/'; return false;"><img class='style3' src='Images/pm25.png' /></a>
+          <br />
+          <center>
+            <span>PM2.5</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="if (is_android) {location.href='Web/w03/find_price2.htm'} else {location.href='Web/w03/find_price.htm'}; return false;"><img class='style3' src='Images/find_price.png' /></a>
+          <br />
+          <center>
+            <span>比價</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='Web/w03/buy1.htm'; return false;"><img class='style3' src='Images/momo.png' /></a>
+          <br />
+          <center>
+            <span>購物</span>
+          </center>
+        </td>
+        <td class='tvtd'>
+          <a href='#' onclick="location.href='https://www.google.com.tw/maps'; return false;"><img class='style3' src='https://seeklogo.com/images/G/google-maps-logo-0F4A5CD83B-seeklogo.com.png' /></a>
+          <br />
+          <center>
+            <span>Map</span>
+          </center>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+<script src="Scripts/hide_logo.js"></script>
+<script>
+  //alert(navigator.userAgent);
+  if (navigator.userAgent.search("TV")>-1)
+  { 
+     $("td").width('20%');
+     $(".tvtd").show();
+     //$("a[onclick*='news.htm']").attr('onclick', 'location.href="Web/w03/news2.htm"');
+  } 
+  else 
+  { 
+     $("td").width('25%');
+     $(".tvtd").hide();
+   } 
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
