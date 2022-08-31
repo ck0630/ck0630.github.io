@@ -14,11 +14,3 @@ function check_taiwan() {
 }
 
 check_taiwan();
-
-
-
-
-
-
-
-
