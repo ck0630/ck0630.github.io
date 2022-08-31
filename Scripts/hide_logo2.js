@@ -11,8 +11,9 @@ function check_taiwan {
        $("div[style*='display:block !important']").hide();
     }
   });   
-  
 }
+
+check_taiwan();
 
 
 
