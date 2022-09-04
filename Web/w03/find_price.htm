@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>比價</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css">
+    <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+    <script src="https://ck0630.github.io/Scripts/jquery-ui-1.11.4.min.js"></script>
+    <script src="https://ck0630.github.io/Scripts/jquery.floatThead.js"></script>
+    <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+    <script src="https://ck0630.github.io/Api/getHttp_local.js"></script>
+    <style type="text/css">
+      table {
+        border-collapse: collapse;
+        border-spacing: 4px;
+	   margin:0px;
+	   padding:0px;
+      }
+      th, tr, td {
+	   background:#fff;
+	   border-color:#AAA; 
+	   border-style:solid;
+	   border-width:1px;
+	   padding:4px;
+	   margin:0px;
+	 }
+
+	 input, button {
+	   font-size: large;
+	 }
+	 .imgd4 {
+	   width: 160px;
+	   height: 160px;
+	 }
+	 ol, li {
+	   list-style-type:none;
+	 }
+	 .items, .bid {
+	   display: flex;
+	   border: 1px solid #aaa;
+	 }
+	 .campaign, .ad_backfill, #item_backfill
+	 {
+	   display: none;
+	 }
+	 .price
+	 {
+	   color: #ef4141;
+	   font-size: large;
+	   font-weight: bold;
+	 }
+
+	 .ui-widget-content a
+	 {
+	   color: -webkit-link;
+	   cursor: pointer;
+        text-decoration: underline;
+	 }
+
+	 .ui-widget
+	 {
+	   font-family: unset;
+	   font-size: unset;    
+	 }
+
+	 h3
+	 {
+	   padding: 0px;
+	   margin: 0px;
+	   margin-block-end: 1em;
+	 }
+
+	 #list_view2
+	 {
+	   padding-inline-start: 0px;
+	   padding-inline-end: 0px;
+	 }
+
+	 .ui-tabs .ui-tabs-panel
+	 {
+	   padding: 0;
+	 }
+
+	 .divGoods
+	 {
+	   display: flex;
+           border: 1px solid #aaa;
+	 }
+
+     .rec-price-20
+     {
+       color: #ef4141;
+       font-size: large;
+       font-weight: bold;
+     }
+     #bk {
+       position: fixed;
+       bottom: 3px;
+       right: 3px;
+       z-index: 9999;
+       visibility: visible;
+     }
+
+    </style>
+    <script>
+        var urlFindPrice = "https://www.findprice.com.tw/g/";
+        var urlFeeBee = "https://feebee.com.tw/s/?q=";
+        var urlShopee = "https://shopee.tw/api/v4/search/search_items?by=relevancy&limit=100&newest=0&order=asc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2&keyword=";
+        var urlShopee2= "https://shopee.tw/api/v4/search/search_items?by=relevancy&limit=100&newest=100&order=asc&page_type=search&scenario=PAGE_GLOBAL_SEARCH&version=2&keyword=";
+        $(document).ready(function() {
+            $("#btn1").click(function(){
+                $("#dv1").html("");
+                $("#dv2").html("");
+                $("#dv3").html("");
+                $("#dv4").html("");
+                var s=$("#in1")[0].value;
+                s=encodeURI(s);
+                $("#findprice").attr("href", urlFindPrice+s);
+                $("#feebee").attr("href", urlFeeBee+s);
+                $("#shopee").attr("href", urlShopee+s);
+                getDataHtml(urlFindPrice+s, "#dv1");
+                getDataHtml(urlFeeBee+s, "#dv2");
+                getDataHtml(urlShopee+s, "#dv3");
+                getDataHtml(urlShopee2+s, "#dv4");
+            });
+
+            var in1 = document.getElementById("in1");
+            in1.addEventListener("keyup", function(event) {
+              // Number 13 is the "Enter" key on the keyboard
+              if (event.keyCode === 13) {
+                // Cancel the default action, if needed
+                event.preventDefault();
+                // Trigger the button element with a click
+                document.getElementById("btn1").click();
+              }
+            });
+
+            var index = 'key';
+            var dataStore = window.sessionStorage;
+            try {
+              var oldIndex = dataStore.getItem(index);
+            } catch(e) {
+              var oldIndex = 0;
+            }
+            $("#tabs").tabs({
+              active : oldIndex,
+              activate : function(event, ui){
+                var newIndex = ui.newTab.parent().children().index(ui.newTab);
+                dataStore.setItem(index, newIndex);  
+              }
+            });
+
+        });
+
+        function getDataHtml(fromUrl, toTable) {
+            getHttp(fromUrl, function (html) {
+                if (fromUrl.includes(urlFindPrice)) 
+                   html2table_findprice(html, toTable);
+                if (fromUrl.includes(urlFeeBee))
+                   html2table_feebee(html, toTable);
+                if (fromUrl.includes("shopee"))
+                   html2table_shopee(html, toTable);
+            });
+        }
+
+        function html2table_findprice(html, toTable)
+        {
+            var s=$(html).find("div#g_div")[0].innerHTML;
+            var s0=s;
+            var pages=parseInt($("#in2").val());
+            //var total=(html.match(/\/\?i=/g) || []).length;
+            var total=10;
+            var count=0;
+            for (var a=2; a<=total; a++) {
+                var url2=urlFindPrice+encodeURI($("#in1")[0].value)+"/?i="+a;
+                var html2=getHttpSync(url2);
+                var s2=$(html2).find("div#g_div")[0].innerHTML;
+                if (s2==s0) break;
+                s+=s2;
+                if (s!="") count++;
+                if (count>pages) break;
+            }
+            s=s.replace(/\/url.aspx/gm, "https:\/\/www.findprice.com.tw\/url.aspx");
+            $(toTable).html(s);
+        }
+
+        function html2table_feebee(html, toTable)
+        {
+            var s=$(html).find("ol#list_view")[0].innerHTML;
+            var pages=parseInt($("#in3").val());
+            var i=html.indexOf('" title="最後一頁">');
+            var total=0;
+            if (i>=0) {
+               for (var a=i; a>0; a--) {
+                   if (html.substring(a, a+1)=="=") {
+                      var s1=html.substring(a+1, i);
+                      total=parseInt(s1);
+                      if (total>pages) total=pages;
+                      break;
+                   }
+               }
+            }
+            for (var a=2; a<=total; a++) {
+                var url2=urlFeeBee+encodeURI($("#in1")[0].value)+"&page="+a;
+                var html2=getHttpSync(url2);
+                var s2=$(html2).find("ol#list_view")[0].innerHTML;
+                s+=s2;
+            }
+            s='<ol id="list_view2">'+s+'</ol>';
+            s=s.replace(/<img data-src=/g, "<img src=");
+            $(toTable).html(s); 
+        }
+
+        function html2table_shopee(html, toTable)
+        {
+            var json = $.parseJSON(html);
+            var json1=json.items;
+            var jsona=[];             //convert json1 to jsona
+            for (var n in json1) {
+              var r1 = json1[n].item_basic;
+              var NAME = r1.name;
+              var IMG  = "https://cf.shopee.tw/file/"+r1.image+"_tn";
+              var PRICE= r1.price/100000; 
+              var LOC  = r1.shop_location;
+              var URL  = r1.name+"-i."+r1.shopid+"."+r1.itemid;
+              URL = URL.replace(/ /g, "-");
+              URL = "https://shopee.tw/"+encodeURI(URL);
+              var rec = {name:NAME, img:IMG, price:PRICE, loc:LOC, url:URL};
+              jsona.push(rec);
+            }
+            jsona.sort(comparePrice);
+            var s='';
+            for (var a=0; a<jsona.length; a++) {
+                var o = jsona[a];
+                var s2 = "<div class='divGoods'>"+
+                    "<div class='GoodsImg'>" + "<a href='"+o.url+"' target='_blank' rel='nofollow'>" + 
+                    "<img src='"+o.img + "' loading='lazy' class='searchImg' style='border:0' width='160px' height='160px'></a>" +
+                    "</div>"+
+                    "<div class='divGoodsContent'>"+
+                    "<div class='rec-price-20'>$ "+o.price+"</div>"+
+                    "<div class='GoodsMname'><span class='mname'>"+o.name+"</span></div>"+
+                    "<div class='GoodsMname'><span class='mname'>"+o.loc+"</span></div>"+
+                    "</div></div>";
+                s+=s2;
+            }
+            s='<ol id="list_view3">'+s+'</ol>';
+            $(toTable).html(s);
+        }
+
+        function getDataJson(fromUrl, toTable) {
+            getHttp(fromUrl, function (html) {
+                var json = $.parseJSON(html);
+                json2table(json, toTable);
+            });
+        }
+
+        function getDataXml(fromUrl, toTable) {
+            getHttp(fromUrl, function (html) {
+                var json = $.xml2json(html);
+                showTable(json, toTable);
+            });
+        }
+
+        function getDataJsonSync(fromUrl, toTable) {
+            var html = getHttpSync(fromUrl);
+            var json = $.parseJSON(html);
+            json2table(json, toTable);
+        }
+
+        function getDataXmlSync(fromUrl, toTable) {
+            var html = getHttpSync(fromUrl);
+            var json = $.xml2json(html);
+            showTable(json, toTable);
+        }
+
+        function showTable(json, toTable) {
+          var json1=json.cwbopendata.location;
+          var jsona=[];             //convert json1 to jsona
+          for (var n in json1) {
+            var r1 = json1[n];
+            var CITY = r1.parameter[0].parameterValue;
+            var TOWN = r1.parameter[2].parameterValue;
+            var WDSD = r1.weatherElement[2].elementValue.value; 
+            var TEMP = r1.weatherElement[3].elementValue.value;
+            var HUMD = r1.weatherElement[4].elementValue.value;
+            var TIME = r1.time.obsTime;
+            var rec = {city:CITY, town:TOWN, temp:TEMP, humd:HUMD, wdsd:WDSD, time:TIME};
+            jsona.push(rec);
+          }
+          jsona.sort(compareTemHum);
+          json2table(jsona, toTable);
+        }
+
+        function compareTemHum(a, b) {
+          if (a.city > b.city) return 1;
+          if (a.city < b.city) return -1;
+          return 0;
+        }
+
+        function comparePrice(a, b) {
+          if (a.price > b.price) return 1;
+          if (a.price < b.price) return -1;
+          return 0;
+        }
+
+        function json2table(json, toTable) {
+          for (var i in json) {
+              var s = "";
+              var o = json[i];
+              var title = "";
+              var value = "";
+              for (var j in o) {
+                  var v1 = j.toString();
+                  var v2 = o[j];
+                  title += v1 + ",";
+                  value += v2 + ",";
+              }
+              if ($(toTable).html().length <= 10) {
+                  var t1 = totr_title(title);
+                  t1="<thead>"+t1+"</thead>";
+                  $(toTable).append(t1);
+              }
+              var t2 = totr(value);
+              $(toTable).append(t2);
+            }
+            set_float_head(toTable);
+        }
+
+        function set_float_head(toTable) {
+          $("toTable").hide();
+          $("toTable").floatThead();
+          $("toTable").show();
+        }
+
+        function totr(s) {
+            s = s.substring(0, s.length-1);
+            var s1 = s.replace(/,/g, "</td><td>");
+            s1 = "<tr><td>" + s1 + "</td></tr>";
+            return s1;
+        }
+
+        function totr_title(s) {
+            s = s.substring(0, s.length-1);
+            var s1 = s.replace(/,/g, "</td><td>");
+            s1 = "<tr><td>" + s1 + "</td></tr>";
+            return s1;
+        }
+
+        String.prototype.format = function() {
+            var formatted = this;
+            for (var i = 0; i < arguments.length; i++) {
+                var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+                formatted = formatted.replace(regexp, arguments[i]);
+            }
+            return formatted;
+        };
+
+        String.prototype.stringBetween = function(s1, s2) {
+          var str = this.toString();
+          var i = str.indexOf(s1);
+          if (i<0) return "";
+          var j = str.indexOf(s2, i+s1.length);
+          return str.substring(i+s1.length, j);
+        }
+
+    </script>
+</head>
+<body>
+   搜尋：<input type="text" id="in1" style="width: 13em" value="" placeholder="關鍵字" autofocus></input>
+   <button id="btn1">比價</button>
+
+   <div id="tabs">
+     <ul>
+       <li><a href="#tabs-1">FindPrice</a></li>
+       <li><a href="#tabs-2">FeeBee</a></li>
+       <li><a href="#tabs-3">蝦皮</a></li>
+     </ul>
+     <div id="tabs-1">
+       <h3><a id="findprice" href="https://www.findprice.com.tw" target="findprice">FindPrice</a>
+       &nbsp;&nbsp;&nbsp;頁數：<input type="text" id="in2" style="width: 3em" value="10"></input></h3>
+       <div id="dv1"></div>
+     </div>
+     <div id="tabs-2">
+       <h3><a id="feebee" href="https://feebee.com.tw" target="feebee">FeeBee</a>
+       &nbsp;&nbsp;&nbsp;頁數：<input type="text" id="in3" style="width: 3em" value="10"></input></h3>
+       <div id="dv2"></div>
+     </div>
+     <div id="tabs-3">
+       <h3><a id="shopee" href="https://shopee.tw/" target="shopee">蝦皮</a>
+       &nbsp;&nbsp;&nbsp;頁數：<input type="text" id="in4" style="width: 3em" value="2"></input></h3>
+       <div id="dv3"></div>
+       <div id="dv4"></div>
+     </div>
+   </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+

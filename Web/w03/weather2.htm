@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1" /> 
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <style type="text/css">
+    #img {
+      max-width: 100%;
+      max-height: 100%;
+      display: block;
+      margin: auto;
+    }
+    #bk
+    {
+      position: fixed;
+      bottom: 3px;
+      right: 3px;
+      z-index: 9999;
+      visibility: visible;
+    }    
+  </style>
+  <script>
+    var url72=[];
+    var img72=[];
+    var url_src="https://www.cwb.gov.tw/Data/satellite/LCC_IR1_CR_1000/LCC_IR1_CR_1000-{0}-{1}-{2}-{3}-{4}.jpg";
+    var index=0;
+    var wsec=200;
+
+    function pad(n, width, z) {
+      z = z || '0';
+      n = n + '';
+      return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+    }
+
+    function get_url(n) {
+      var dt = new Date(new Date()-(72-n)*10*60*1000);
+      var yyyy = dt.getFullYear();
+      var mm = dt.getMonth()+1;
+      var dd = dt.getDate();
+      var hh = dt.getHours();
+      var mi = Math.floor(dt.getMinutes() / 10)*10;
+      var s=url_src.format(yyyy, pad(mm, 2), pad(dd, 2), pad(hh, 2), pad(mi, 2));
+      return s;
+    }
+
+    String.prototype.format = function() {
+        var formatted = this;
+        for (var i = 0; i < arguments.length; i++) {
+            var regexp = new RegExp('\\{'+i+'\\}', 'gi');
+            formatted = formatted.replace(regexp, arguments[i]);
+        }
+        return formatted;
+    };
+
+    function preloadimages(ary){
+         var newimages=[], loadedimages=0; destimages=[];
+         var postaction=function(){};
+         var ary=(typeof ary!="object")? [ary] : ary;
+         function imageloadpost(){
+             loadedimages++;
+             if (loadedimages==ary.length){
+                 var i=0;
+                 for (var a=0; a<ary.length; a++) {
+                     if (newimages[a].width>0) {
+                       destimages[i]=newimages[a];
+                       i++;
+                     }
+                 }
+                 postaction(destimages); //call postaction and pass in newimages array as parameter
+             }
+         }
+         for (var i=0; i<ary.length; i++){
+             newimages[i]=new Image();
+             newimages[i].src=ary[i];
+             newimages[i].onload=function(){
+                 imageloadpost();
+             }
+             newimages[i].onerror=function(){
+                 imageloadpost();
+             }
+         }
+         return { //return blank object with done() method
+             done:function(f){
+                 postaction=f || postaction; //remember user defined callback functions to be called when images load
+             }
+         }
+    }
+
+    function init() {
+      for (var a=0; a<72; a++) {
+        url72[a]=get_url(a);
+      }
+      $(window).bind('resize', set_body_height);
+      set_body_height();
+    }
+
+    String.prototype.stringBetween = function(s1, s2) {
+      var re = new RegExp(s1 + "(.*?)" + s2);
+      var s1 = this.match(re);
+      if (s1.length>1) return s1[1];
+      return "";
+    }
+
+    function show() {
+      setTimeout(function(){
+        wsec=200;
+        if (index>=img72.length-1) {
+          wsec=2000;
+          if (index>=img72.length)
+            index=0;
+        }
+        $("#img").attr("src", img72[index].src);
+        $("#dt").text(img72[index].src.stringBetween("https://www.cwb.gov.tw/Data/satellite/LCC_IR1_CR_1000/LCC_IR1_CR_1000-",".jpg"));
+        index++;
+        show();
+      }, wsec);
+    }
+
+    function set_body_height() { // set body height = window height
+      $('body').height($(window).height());
+    }
+
+    $(document).ready(function() {
+      init();
+      preloadimages(url72).done(function(images){
+        img72=images;
+        show();
+      });
+    });
+  </script>
+</head>
+<body>
+  <image id="img" />
+  <img id='bk' src='https://ck0630.github.io/Images/back.png' onclick='history.go(-1)'>
+  <center style="margin-top:-60px"><h2 style="color:#FFE6D5" id="dt"></h2></center>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js" type="text/javascript"></script>
+
+

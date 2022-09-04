@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+    <link rel="icon" href="https://ck0630.github.io/Images/computer_king.jpg">
+    <title>web</title>
+    <link rel="stylesheet" type="text/css" href="https://ck0630.github.io/Styles/Site.css">
+    <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://ck0630.github.io/Scripts/myscript.js" type="text/javascript"></script>
+  <style type="text/css">
+  </style>
+
+  <script type="text/javascript">
+    function setIconSize()
+    {
+      var w = $('.style3').width();
+      $('.style3').css('border-radius', w * 0.2 + 'px');
+      $('span').css('font-size', w * 0.25 + 'px');
+      $('#menu_btn').css('width', w * 0.3 + 'px')
+    }
+    $(document).ready(function ()
+    {
+      onImageReady(".content img", setIconSize);
+    });
+
+    $(window).resize(function ()
+    {
+      setContentH();
+      setIconSize()
+    }
+    );
+    function setContentH()
+    {
+      $("#content").height($(top).height())
+    }
+  </script>
+</head>
+
+<body>
+  <h1 class="header">web</h1>
+  <h1 class="header_blank" id="header_blank">&nbsp;</h1>
+  <div class="content" id="content1">
+    <table>
+      <tr>
+        <td>
+          <a href='#' onclick="location.href='https://www.kocpc.com.tw'; return false;"><img class='style3' src='https://i0.wp.com/i.imgur.com/bR0jgm5.jpg?w=250&h=250' /></a>
+          <br />
+          <center>
+            <span>電腦王阿達</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='https://suku3c.com'; return false;"><img class='style3' src='https://ewyse.agency/wp-content/uploads/2020/01/3C-Logo-NeonSign-e1600517150425.png' /></a>
+          <br />
+          <center>
+            <span>SuKu3C團</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='https://ahui3c.com/'; return false;"><img class='style3' src='https://yt3.ggpht.com/Dj_w5kFaVeEgb3pFdxIzp7dn7GgeYvik1-qt46orrMaHC3_KKqJgcZxtCuG5z7QGv-XJXBozXg=s176-c-k-c0x00ffffff-no-rj' /></a>
+          <br />
+          <center>
+            <span>3C達人</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='https://dacota.tw/'; return false;"><img class='style3' src='https://pbs.twimg.com/profile_images/942385750120656896/GsC2Uek3_400x400.jpg' /></a>
+          <br />
+          <center>
+            <span>開箱文</span>
+          </center>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <a href='#' onclick="location.href='https://www.techbang.com/tags/8097'; return false;"><img class='style3' src='https://i3.wp.com/telegra.ph/file/af58c4806e92d22a9548b.jpg'></a>
+          <br />
+          <center>
+            <span>T客邦</span>
+          </center>
+        </td>
+        <td>
+          <a href='#' onclick="location.href='https://tech3c.pixnet.net/category/24'; return false;"><img class='style3' src='https://imageproxy.pimg.tw/zoomcrop?url=https%3A%2F%2Fs.pixfs.net%2Fapp%2Fpixnet-app%2FiTunesArtwork%403x.png&width=100&height=100' /></a>
+          <br />
+          <center>
+            <span>痞客邦</span>
+          </center>
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js?_=1"></script>
+

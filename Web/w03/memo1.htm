@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+          
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="../../Scripts/md5.js"></script>
+  <style type="text/css">
+
+  </style>
+  <script>
+    $(document).ready(function() {
+      $("#btn1").click(function(){
+          if (CryptoJS.MD5($("#txt1")[0].value)=="698d51a19d8a121ce581499d7b701668") {
+             $.get("../../Mobile/memo.txt", null, function(data) {
+                 $("#txt2").val(data);
+             });
+          };
+      });
+    });
+  </script>
+</head>
+<body>
+  <input type="password" id="txt1"></input>&nbsp;&nbsp;&nbsp;<button id="btn1">run</button>
+  <br />
+  <br />
+  <textarea id="txt2" rows="12" cols="20" wrap="off" style="font-size:XX-Large;width:97%;"></textarea>
+</body>
+</html>
+
+

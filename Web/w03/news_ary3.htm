@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+  <META HTTP-EQUIV="EXPIRES" CONTENT="0">
+  <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery-ui-1.11.4.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.floatThead.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://ck0630.github.io/Api/getHttp_local.js"></script>
+  <style type="text/css">
+    .dv_row
+    {
+      width: 25%;
+      float: left;
+    }
+    #sp1 {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      z-index: 999;
+    }
+    @media (max-width: 600px)
+    {
+      .dv_row
+      {
+        width: 33%;
+      }
+    }
+    .dv
+    {
+      width: 90%;
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 22px;
+    }
+    .style3
+    {
+      width: 100%;
+      height: auto;
+      min-height: 100px;
+      border: 0;
+      border-radius: 22px;
+      box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+    }
+  </style>
+  <script>
+    var urlYahoo = "https://tw.news.yahoo.com/";
+    var urlUdn = "https://udn.com/news/index";
+    var index = 0;
+    var dvary=[[],[],[],[],[]];
+
+    function addCache(s1, s2, s3, s4) {
+      var s=s2+"||"+s3+"||"+s4;
+      window.localStorage[s1]=s;
+    }
+
+    function getCache(url) {
+      var s=window.localStorage[url];
+      if (s==undefined) s="";
+      return s;
+    }
+
+    function addOne(s1, s2, s3, s4, s5) {
+      var n=index % 4 + 1;
+      if ($(document).width()<=600)
+         n=index % 3 + 1;
+      var dvn="#dv"+n;
+      if (s4!="") s4="<br/>"+s4;
+      var s6='<div class="dv"><table><tr><td><a class="variousi" href="'+s1+'" target="second">'+
+        '<img class="style3" src="'+s2+'" data-src="'+s2+'">'+
+        '</a></td></tr><tr><td><p style="word-break:break-all">'+
+        '<b>'+s3+'</b>'+s4+'</p></td></tr></table></div>';
+      if (s5=="append")
+      {
+         $(dvn).append(s6);
+
+      }
+      if (s5=="insert")
+      {
+         $(dvn).html(s6+$(dvn).html());
+      }
+      index ++;
+    }
+
+    function getDataJson_udn(fromUrl) {
+        var html=$("#udn").html();
+        if (html=="") return;
+        var ary=$.parseJSON(html);
+        for (var a=0; a<ary.length; a++) {
+          var o=ary[a];
+          var url=o.link;
+          if (!url.includes("news"))
+            continue;
+          if (url.includes("?"))
+            url=url.substring(0, url.indexOf("?"));
+          var s1=url;
+          var s2=o.jpg;
+          var s3=o.title;
+          var s4=o.dsc;
+          addOne(s1, s2, s3, s4, "append");
+        }
+        //pos_setting();
+    }
+
+    function getDataJson_yahoo(fromUrl) {
+        var html=$("#yahoo").html();
+        if (html=="") return;
+        var ary=$.parseJSON(html);
+        for (var a=0; a<ary.length; a++) {
+          var o=ary[a];
+          var url=o.link;
+          if (!url.includes("news"))
+            continue;
+          var s1=url;
+          var s2=o.jpg;
+          var s3=o.title;
+          var s4=o.dsc;
+          addOne(s1, s2, s3, s4, "append");
+        }
+        //pos_setting();
+      }
+
+
+    var newIndex = 0;
+
+    function pos_setting() {
+        $(".variousi").click(function()
+        {
+          //recover last pos
+          //var url=window.localStorage["url_news"];
+          //$(".variousi[href='"+url+"']").parent().css("background-color", "white");
+          //remember current pos
+          url = $(this).attr("href");
+
+          window.localStorage["url_news"] = url;
+          window.localStorage["clk_"+url] = "1";
+
+
+          $(this).parent().parent().css("background-color", "red");
+          window.open(url, "second");
+          return false;
+        }
+        );
+
+        var url=window.localStorage["url_news"];
+        $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+        var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+        $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());
+
+        for (var a=0; a<$(".variousi").length; a++) {
+          var o=$(".variousi")[a];
+          var s=getCache("clk_"+o.href);
+          if (s=="1")
+            $(o).parent().parent().css("background-color", "red");
+        }
+    }
+
+    $(window).load(function() {
+        pos_setting();
+    });
+
+    function check_date_time() {
+      var s1=document.getElementById("sp1").innerHTML;
+      var m1=s1.slice(0, 2), d1=s1.slice(3, 5), h1=s1.slice(6, 8), n1=s1.slice(9, 11);
+      var t1=parseInt(n1)+(parseInt(h1)+((parseInt(m1)*30)+parseInt(d1))*24)*60;
+
+      var d=new Date();
+      var m2=d.getMonth()+1, d2=d.getDate(), h2=d.getHours(), n2=d.getMinutes();
+      var t2=n2+(h2+((m2*30)+d2)*24)*60;
+
+      if ((t2-t1>30) || (t2-t1<0)) {
+        location.href='news_ary.htm';
+      }
+    }
+
+    $(document).ready(function()
+    {
+      check_date_time();
+
+      $.ajaxSetup({ cache: false, async: false });
+
+      getDataJson_udn(urlUdn);
+      getDataJson_yahoo(urlYahoo);
+
+      var config =
+      {
+        rootMargin: '0px 0px 50px 0px',
+              threshold: 0
+      }
+      ;
+      var observer = new IntersectionObserver(function(entries, self)
+      {
+        entries.forEach(entry =>
+        {
+          if(entry.isIntersecting)
+          {
+            entry.target.src=entry.target.dataset.src;
+            self.unobserve(entry.target);
+          }
+        }
+        );
+      }
+      , config);
+      var imgs = document.querySelectorAll('[data-src]');
+      imgs.forEach(img =>
+      {
+        observer.observe(img);
+      }
+      );
+    }
+    );
+
+    String.prototype.stringBetween = function(s1, s2) {
+      var str = this.toString();
+      var i = str.indexOf(s1);
+      if (i<0) return "";
+      var j = str.indexOf(s2, i+s1.length);
+      return str.substring(i+s1.length, j);
+    }
+  </script>
+</head>
+<body>
+  <a href="https://udn.com/news/index" target="second">
+    Udn新聞
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://tw.news.yahoo.com/" target="second">
+    Yahoo新聞
+  </a>
+  <span id="sp1">05-18 18:50</span>
+  <br />
+  <div id="dv0">
+    <div id="dv1" class="dv_row"></div>
+    <div id="dv2" class="dv_row"></div>
+    <div id="dv3" class="dv_row"></div>
+    <script>
+      if ($(document).width()>=600) {
+         document.write('<div id="dv4" class="dv_row"></div>');
+      }
+    </script>
+  </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+
+<code id="yahoo" style="display:none">[]</code>
+<code id="udn"   style="display:none">[]</code>
+
+

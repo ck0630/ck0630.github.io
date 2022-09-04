@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://ck0630.github.io/Scripts/jquery.mobile-1.4.5.min.css" />
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.mobile-1.4.5.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script>
+    $(window).load(function () {
+        $(function () {
+            $("a").each(function () {
+                $(this).attr("rel", "external");
+            });
+        });
+    });  
+    $(document).on('pageinit', '#p1', function(){
+    	
+    });
+  </script>
+</head>
+<body>
+  <div data-role="page" id="p1">
+    <div data-role="header">
+      <h1>Welcome To My Homepage</h1>
+    </div>
+
+    <div data-role="main" class="ui-content">
+      <p><a href="https://www.momoshop.com.tw/Main.jsp" class="ui-btn ui-shadow ui-corner-all">momo</a></p>
+      <p><a href="https://ecvip.pchome.com.tw/login/v2/login.htm" class="ui-btn ui-shadow ui-corner-all">pchome</a></p>
+      <p><a href="https://www.pcstore.com.tw/" class="ui-btn ui-shadow ui-corner-all">pcstore</a></p>
+      <p><a href="https://online.carrefour.com.tw/tw" class="ui-btn ui-shadow ui-corner-all">家樂福</a></p>
+      <p><a href="https://www.etmall.com.tw/" class="ui-btn ui-shadow ui-corner-all">東森</a></p>
+      <p><a href="https://www.buy123.com.tw/" class="ui-btn ui-shadow ui-corner-all">生活市集</a></p>
+      <p><a href="https://www.qoo10.com/gmkt.inc/Login/Login.aspx" class="ui-btn ui-shadow ui-corner-all">qoo</a></p>
+      <p><a href="https://www.rakuten.com.tw" class="ui-btn ui-shadow ui-corner-all">樂天</a></p>
+      <p><a href="https://world.taobao.com/markets/all/login" class="ui-btn ui-shadow ui-corner-all">淘寶</a></p>
+      <p><a href="https://member.ruten.com.tw/user/login.htm" class="ui-btn ui-shadow ui-corner-all">露天</a></p>
+      <p><a href="https://www.lativ.com.tw/Home/Login_Register" class="ui-btn ui-shadow ui-corner-all">lativ</a></p>
+      <p><a href="https://login.yahoo.com/?authMechanism=primary&done=https%3A%2F%2Fwww.yahoo.com%2F&eid=100&add=1" class="ui-btn ui-shadow ui-corner-all">Yahoo</a></p>
+      <p><a href="https://shopee.tw/buyer/login?__classic__=1" class="ui-btn ui-shadow ui-corner-all">蝦皮</a></p>
+    </div>
+  
+    <div data-role="footer" data-position="fixed">
+      <h1>2019 version</h1>
+    </div>
+  </div><!-- /page -->
+
+ </body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+

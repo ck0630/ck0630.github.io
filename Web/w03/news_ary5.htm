@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.min.css">
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery-ui-1.11.4.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.floatThead.js"></script>
+  <script src="https://ck0630.github.io/Scripts/lazyload.js"></script>
+  <style type="text/css">
+    .td1 {
+      width: 22%;
+    }
+
+    .tb2 {
+      width: 100%;
+    }
+
+    .dv_row {
+      width: 25%;
+      float: left;
+    }
+
+    @media (max-width: 600px)
+    {
+      .dv_row
+      {
+        width: 33%;
+      }
+    }
+
+    .dv {
+      width: 90%;
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 22px;
+    }
+    .style3 {
+      width: 100%;
+      height: auto;
+      min-height: 100px;
+      border: 0;
+      border-radius: 22px;
+      box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+    }
+
+    #sp1 {
+      position: fixed;
+      right: 10px;
+      top: 5px;
+      z-index: 999;
+    }
+    .ui-tabs .ui-tabs-panel {
+      padding: 0;
+      margin-top: 1.618em;
+    }
+    .ui-widget-content {
+      border: 0;
+    }
+    .ui-widget {
+      font-size:1em;
+    }
+    body {
+      margin: 0;
+    }
+   .ui-tabs .ui-tabs-nav {
+     margin: 0;
+     padding: 0;
+   }
+   .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+     padding: .5em .65em;
+   }
+   .ui-helper-reset {
+     line-height:0.382;
+   }
+   .ui-tabs .ui-tabs-nav li.ui-tabs-active {
+     margin-bottom:2px;
+   }
+   #bk
+   {
+     position: fixed;
+     bottom: 3px;
+     right: 3px;
+     z-index: 9999;
+     visibility: visible;
+   }
+  </style>
+  <script>
+    var newIndex = 0;     //ui use
+    var index = [0 , 0];  //addOne use
+
+    function getCache(url) {
+      var s = window.localStorage[url];
+      if (s == undefined)
+          s = "";
+      return s;
+    }
+
+    function addOne(tabn, s1, s2, s3, s4, s5) {
+      var n=index[tabn-1] % 4 + 1;
+      if ($(document).width()<=600)
+         n=index[tabn-1] % 3 + 1;
+      var dvn="#dv"+tabn+"_"+n;
+      if (s4!="") s4="<br/>"+s4;
+      var s6='<div class="dv"><table><tr><td><a class="variousi" href="'+s1+'">'+
+        '<img class="style3" src="'+s2+'" data-src="'+s2+'">'+
+        '</a></td></tr><tr><td><p style="word-break:break-all">'+
+        '<b>'+s3+'</b>'+s4+'</p></td></tr></table></div>';
+      if (s5=="append")
+      {
+         $(dvn).append(s6);
+      }
+      if (s5=="insert")
+      {
+         $(dvn).html(s6+$(dvn).html());
+      }
+      index[tabn-1] ++;
+    }
+
+    function getDataJson_udn() {
+        var html=$("#udn").html();
+        if (html=="") return;
+        var ary=$.parseJSON(html);
+        for (var a=0; a<ary.length; a++) {
+          var o=ary[a];
+          var url=o.link;
+          if (!url.includes("news"))
+            continue;
+          if (url.includes("?"))
+            url=url.substring(0, url.indexOf("?"));
+          var s1=url;
+          var s2=o.jpg;
+          var s3=o.title;
+          var s4=o.dsc;
+          addOne(1, s1, s2, s3, s4, "append");
+        }
+    }
+
+    function getDataJson_yahoo() {
+        var html=$("#yahoo").html();
+        if (html=="") return;
+        var ary=$.parseJSON(html);
+        for (var a=0; a<ary.length; a++) {
+          var o=ary[a];
+          var url=o.link;
+          if (!url.includes("news"))
+            continue;
+          var s1=url;
+          var s2=o.jpg;
+          var s3=o.title;
+          var s4=o.dsc;
+          addOne(1, s1, s2, s3, s4, "append");
+        }
+    }
+
+    function getDataJson_NewsApi() {
+      try {
+        var data=data_NewsApi;
+        for (var a=0; a<data.articles.length; a++) {
+          var s1=data.articles[a].url;
+          var s2=data.articles[a].urlToImage;
+          var s3=data.articles[a].title;
+          var s4=data.articles[a].description;
+          addOne(2, s1, s2, s3, s4, "append");
+        }
+      } catch {}
+    }
+
+    function getDataJson_NewsIO() {
+      try {
+        var data=data_NewsIo;
+        for (var a=0; a<data.articles.length; a++) {
+          var s1=data.articles[a].url;
+          var s2=data.articles[a].image;
+          var s3=data.articles[a].title+"("+data.articles[a].source.name+")";
+          var s4=data.articles[a].description;
+          addOne(2, s1, s2, s3, s4, "append");
+        }
+      } catch {}
+    }
+
+    $(window).load(function() {
+        /*
+        var url=window.localStorage["url_now"];
+        $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+        var winyy=0;
+        if ($(".variousi[href='"+url+"']").length>0)
+          winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+        $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());
+        for (var a = 0; a < $(".variousi").length; a++) {
+            var o = $(".variousi")[a];
+            var s = getCache("clk_" + o.href);
+            if (s == "1")
+                $(o).parent().parent().css("background-color", "red");
+        }
+        */
+    });
+
+    $(document).ready(function() {
+      lazyload();
+      getDataJson_udn();
+      getDataJson_yahoo();
+      getDataJson_NewsApi();
+      getDataJson_NewsIO();
+
+      $("#tabs").tabs({
+          active: 0, //(window.localStorage["tabs"] || 0),
+          activate: function (event, ui) {
+              newIndex = ui.newTab.parent().children().index(ui.newTab);
+              $(window).scrollTop(0);
+              //window.localStorage["tabs"] = newIndex;
+
+              //var url=window.localStorage["url_"+newIndex];
+              //$(".variousi[href='"+url+"']").parent().css("background-color", "red");
+              //var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+              //$(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());
+          }
+      });
+
+
+      $(".variousi").click(function(){
+        //recover last pos
+        //var url=window.localStorage["url"];
+        //$(".variousi[href='"+url+"']").parent().css("background-color", "white");
+        //remember current pos
+
+        url = $(this).attr("href");
+        /*
+        window.localStorage["url_now"] = url;
+        window.localStorage["clk_" + url] = "1";
+        */
+        $(this).parent().parent().css("background-color", "red");
+        window.open(url, "second");
+        return false;
+      });
+
+      var config = {
+        rootMargin: '0px 0px 50px 0px',
+        threshold: 0
+      };
+      var observer = new IntersectionObserver(function(entries, self) {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            entry.target.src=entry.target.dataset.src;
+            self.unobserve(entry.target);
+          }
+        });
+      }, config);
+      var imgs = document.querySelectorAll('[data-src]');
+      imgs.forEach(img => {
+        observer.observe(img);
+      });
+
+    });
+  </script>
+</head>
+<body>
+  <span id="sp1">06-13 09:07</span>
+  <div id="tabs">
+    <ul style="position:fixed; top:0; width:100%">
+      <li><a href="#tabs-1">即時</a></li>
+      <li><a href="#tabs-2">頭條</a></li>
+    </ul>
+    <div id="tabs-1">
+      <div id="dv1_1" class="dv_row">
+      </div>
+      <div id="dv1_2" class="dv_row">
+      </div>
+      <div id="dv1_3" class="dv_row">
+      </div>
+      <script>
+        if ($(document).width()>=600) {
+           document.write('<div id="dv1_4" class="dv_row"></div>');
+        }
+      </script>
+    </div>
+
+    <div id="tabs-2">
+      <div id="dv2_1" class="dv_row">
+      </div>
+      <div id="dv2_2" class="dv_row">
+      </div>
+      <div id="dv2_3" class="dv_row">
+      </div>
+      <script>
+        if ($(document).width()>=600) {
+           document.write('<div id="dv2_4" class="dv_row"></div>');
+        }
+      </script>
+    </div>
+  </div>
+  <img id="bk" src="https://ck0630.github.io/Images/back.png" onclick="document.location='https://ck0630host.000webhostapp.com/Web/w03/news2.htm'">
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+
+
+<script>data_NewsApi={"status":"ok","totalResults":34,"articles":[{"source":{"id":null,"name":"Yahoo Entertainment"},"author":"鄭安廷","title":"一圖看本周天氣！今3縣市飆36℃ 周三起各地有雨至周末 - Yahoo奇摩新聞","description":"台灣今（13）日除中南部偶有局部短暫雨或雷雨外，其它地區多雲到晴，午後北部、東北部和東部有雷雨，氣象局並已針對屏東與花東發布高溫黃色燈號（逾36℃），值得留意的是周三起滯留鋒再度南下，各地有雨防劇烈天氣（雷擊、強風、瞬間強降雨），至周日仍應注意較大雨勢。","url":"https://tw.news.yahoo.com/%E4%B8%80%E5%9C%96%E7%9C%8B%E6%9C%AC%E5%91%A8%E5%A4%A9%E6%B0%A3%EF%BC%81%E4%BB%8A-3-%E7%B8%A3%E5%B8%82%E9%A3%86-36-%E2%84%83-%E5%91%A8%E4%B8%89%E8%B5%B7%E5%90%84%E5%9C%B0%E6%9C%89%E9%9B%A8%E8%87%B3%E5%91%A8%E6%9C%AB-001042317.html","urlToImage":"https://s.yimg.com/os/creatr-uploaded-images/2022-06/f67b1a20-eaac-11ec-bd7d-4c3a9e759a5b","publishedAt":"2022-06-13T00:15:04Z","content":null},{"source":{"id":null,"name":"Yahoo Entertainment"},"author":"中廣新聞網","title":"蒲亭親信放話！ 習近平提「中國台灣」問題不能討價還價 - Yahoo奇摩新聞","description":"俄羅斯總統府第一副首長基里延科，在俄羅斯大報網站文章表示，中國大陸領導人習近平提出的「中國台灣」問題，議題不能拿來討價還價。（戚海倫報導）俄羅斯12日國慶日「俄羅斯日」，紀念當時蘇聯加盟共和國「俄羅斯蘇維埃聯邦社會主義共和國」人民大會，在1990年6月12日宣告俄羅斯國家主權，是俄羅斯脫離蘇聯的重要一步。俄羅斯大...","url":"https://tw.news.yahoo.com/%E8%92%B2%E4%BA%AD%E8%A6%AA%E4%BF%A1%E6%94%BE%E8%A9%B1-%E7%BF%92%E8%BF%91%E5%B9%B3%E6%8F%90-%E4%B8%AD%E5%9C%8B%E5%8F%B0%E7%81%A3-%E5%95%8F%E9%A1%8C%E4%B8%8D%E8%83%BD%E8%A8%8E%E5%83%B9%E9%82%84%E5%83%B9-232441611.html","urlToImage":"https://s.yimg.com/uu/api/res/1.2/PSxogeRzPymi3ubg.QIhXg--~B/aD05MDA7dz0xMjAwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/zh-tw/bcc.com.tw/2488e60a8f4a76fbef37507a9ee06f5a","publishedAt":"2022-06-12T23:24:41Z","content":"[CTWANT] 11K9901199920112013302825K9901154101.49"},{"source":{"id":null,"name":"Ltn.com.tw"},"author":"自由時報","title":"MLB》「很危險！」大谷翔平與捕手相撞引日美熱議 - 自由時報","description":"〔體育中心／綜合報導〕大谷翔平昨對陣大都會火力大放送，單場三安猛打還敲出本季第13轟，差一支三壘安打就能完成完全打擊，而他在3局的本壘攻防戰出局，引起日本節目的討論，同時日美雙方也都有網友針對該防守回合進行討論。大谷翔平在3局敲出一壘安打後透過倫登（Anthony Rendon）的滾地球進佔得點圈，","url":"https://sports.ltn.com.tw/news/breakingnews/3957962","urlToImage":"https://img.ltn.com.tw/Upload/sports/page/800S/2022/06/12/php8BwkUy.jpg","publishedAt":"2022-06-12T22:55:00Z","content":"USA TODAY Sports\r\n133\r\n3Anthony RendonJared WalshJeff McNeil\r\n...\r\nTomas NidoAbemaTV\r\nJeff McNeil throws out Shohei Ohtani at home to end the 3rd: pic.twitter.com/N2WQhRSAh1\r\n— SNY @SNYtv June 12, 20… [+13 chars]"},{"source":{"id":null,"name":"Yahoo Entertainment"},"author":"周刊王CTWANT |娛樂組","title":"獨家／鄧麗欣情斷王子 在台近億副業跟著收攤 - Yahoo奇摩新聞","description":"[周刊王CTWANT]","url":"https://tw.news.yahoo.com/%E7%8D%A8%E5%AE%B6-%E9%84%A7%E9%BA%97%E6%AC%A3%E6%83%85%E6%96%B7%E7%8E%8B%E5%AD%90-%E5%9C%A8%E5%8F%B0%E8%BF%91%E5%84%84%E5%89%AF%E6%A5%AD%E8%B7%9F%E8%91%97%E6%94%B6%E6%94%A4-221425663.html","urlToImage":"https://s.yimg.com/uu/api/res/1.2/EQalK2b.3CqEQzx92Mygfg--~B/aD00NTI7dz04NTg7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/ko/ctwant_com_582/f45c44ecaf0e9f3be12a4a73fecd27d4","publishedAt":"2022-06-12T22:14:25Z","content":"[CTWANT] 20181011 Sip Tea166\r\nCTWANT1011 Sip TeaIGGoogle91011 Sip TeaIG\r\n1011 Sip TeaIG91011 Sip Tea IG\r\n1011Sip TeaIP\r\n1011 Sip Tea1011 Sip Tea HK IG\r\n2020K11\r\n20184263\r\n2\r\nPO\r\nCTWANT 40"},{"source":{"id":"engadget","name":"Engadget"},"author":null,"title":"免費的《鬥陣特攻2》將於10 月4 日登陸主機和PC - Engadget 中文版","description":"免費的《鬥陣特攻 2》將於 10 月 4 日登陸主機和 PC，新英雄「垃圾鎮女王」登場亮相！","url":"https://chinese.engadget.com/overwatch-2-free-to-play-early-access-date-183952179.html","urlToImage":"https://s.yimg.com/os/creatr-uploaded-images/2022-06/9d5b0690-ea7e-11ec-b7fd-e94f246918c0","publishedAt":"2022-06-12T21:13:39Z","content":"XboxBethesda 2Overwatch 2 10 4 Xbox Series X/SXbox OnePlayStation 5PS4 Switch PC beta 6 17 \r\n 2Junker Queen beta 2"},{"source":{"id":null,"name":"Appledaily.com"},"author":"蘋果新聞網","title":"關鍵一句話在消防局譯文中消失恩恩爸：可能影響後續送醫所有判斷｜ 蘋果新聞網｜ 蘋果日報 - 蘋果新聞網","description":"新北市中和2歲童恩恩確診病逝「消失的81分鐘」引發社會關注，恩恩的林姓父親昨深夜在臉書發文，表示在核對聽取消防局錄音的譯文筆記時，發現遺漏了關鍵的一句話，「沒有辦法派車，要通知1922。」 林男表示，這句話發生在妻子打到119的第一通求救電話時，當時妻子說明恩恩狀態很差、意識...","url":"https://tw.appledaily.com/local/20220613/WIOY6GDH6FE2HE7QQCJA3ATPHQ/","urlToImage":"https://tw.appledaily.com/resizer/EPdhsRwlhUN0K1NnriAFYlqkKX0=/1920x1080/filters:quality(100)/cloudfront-ap-northeast-1.images.arcpublishing.com/appledaily/JIFIHSXI6NB4BGLOXHTNHPNLFY.JPG","publishedAt":"2022-06-12T21:03:22Z","content":null},{"source":{"id":null,"name":"Chinatimes.com"},"author":"陳冠宇","title":"魏鳳和：膽敢分裂台灣 不惜一戰打到底 陸委會：藐視國際關係和平原則的宣戰行徑 - 中時新聞網 Chinatimes.com","description":"中國大陸國防部長魏鳳和昨（12）日於新加坡香格里拉對話會議發表演講，警示台灣若從中國分裂出去，中共解放軍將「不惜一戰、不惜代價，一定會打到底」。這是魏鳳和繼10日與美國防長奧斯汀見面之後，在3天內二度發出","url":"https://www.chinatimes.com/newspapers/20220613000306-260108","urlToImage":"https://images.chinatimes.com/newsphoto/2022-06-13/656/B01A00_P_01_02.jpg","publishedAt":"2022-06-12T20:10:00Z","content":"<ol></ol>"},{"source":{"id":null,"name":"Gamebase.com.tw"},"author":null,"title":"《仁王》製作團隊新作《臥龍：失落王朝》發表，三國題材誅魔動作遊戲2023 年登場 - 遊戲基地","description":"日本光榮特庫摩旗下 Team Ninja 在微軟「Xbox \">臥龍：失落王朝》（Wo Long: Fallen Dynasty） 預告影片。，預定 2023 年在 Xbox Series X|S、Xbox One 以及 Windows PC 平台推出，並於發售首日即可於 XBOX GAME PASS 訂閱暢玩。\">　　《臥龍：失落王朝》將講述一個無名的士兵在一個黑暗奇幻版的後漢三國時代中，為","url":"https://news.gamebase.com.tw/news/detail/99399213","urlToImage":"https://image.gamebase.com.tw/gb_img/6/004/193/4193576.jpg&og=y","publishedAt":"2022-06-12T19:31:02Z","content":null},{"source":{"id":null,"name":"Yahoo Entertainment"},"author":"Andy Yang","title":"《Forza Motorsport》將在2023 年春季來到Xbox 與PC 上 - Yahoo奇摩新聞","description":"Turn 10新一代的《Forza Motorsport》（正式譯名暫不詳）即將在 2023 年春季來到 Xbox 主機與 PC 上，並且會在上線首日就能透過 Game Pass 遊玩。自前代的《極限競速 7》於 2017 年推出至今，已經有超過五年的時間，在這當中原本與其交替推出的分支系列《極限競速 地平線》都...","url":"https://tw.news.yahoo.com/forza-motorsport-%E5%B0%87%E5%9C%A8-2023-%E5%B9%B4%E6%98%A5%E5%AD%A3%E4%BE%86%E5%88%B0-191139541.html","urlToImage":"https://s.yimg.com/ny/api/res/1.2/ie6H2bdmiCSamP_Hn71O5Q--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD02NzU-/https://s.yimg.com/uu/api/res/1.2/XYeIDAZtaFP8B.6uVj953Q--~B/aD0xMTI1O3c9MjAwMDthcHBpZD15dGFjaHlvbg--/https://media.zenfs.com/en/engadget_939/5497d101326aaaf5bd12743a460fe65f","publishedAt":"2022-06-12T19:11:39Z","content":"Forza Motorsport 2023 Xbox PC Game Pass 7 2017 Forza Motorsport8\r\n Turn 10 demo \r\n Circuit de Spa-Francorchamps Leguna Seca Kyalami Grand Prix Circuit 33 \r\nForza Motorsport"},{"source":{"id":null,"name":"4gamers.com.tw"},"author":"湯包","title":"小島秀夫新作正式公開，微軟Xbox Game Studios共同開發 - 4Gamers","description":"正如一切的八卦風向，小島秀夫在稍早的微軟線上發表會中，正式透露新作正在與微軟 Xbox Game Studios 攜手開發。 這場沒有任何遊戲名稱、畫面、線索。小島秀夫在短暫的談話影像，透露了這款「全新遊戲」是小島秀夫自己一直想做的。雖然沒有明講，但看起來新作似乎會採用微軟的雲端遊戲科技（或其他更新的東西）。","url":"https://www.4gamers.com.tw/news/detail/53629/hideo-kojima-team-up-with-xbox-game-studios-officially-confirmed","urlToImage":"https://img.4gamers.com.tw/news-image/5c9e46d1-127a-4cef-8f48-55316b70ba46.jpg","publishedAt":"2022-06-12T18:46:18Z","content":null},{"source":{"id":null,"name":"Yahoo Entertainment"},"author":"記者洪敏祥/綜合報導","title":"八音才子黃文擇過世 素還真成絕響 - Yahoo奇摩新聞","description":"今年是布袋戲迷悲痛的一年，天宇布袋戲創辦人黃文耀在2月6日過世，才相隔四個月，他的雙胞胎哥哥黃文擇，一手打造霹靂布袋戲的經典英雄素還真，配音數十載縱橫武林，竟也在今天過世，兩位國寶大師同在67歲駕鶴西...","url":"https://tw.news.yahoo.com/%E5%85%AB%E9%9F%B3%E6%89%8D%E5%AD%90%E9%BB%83%E6%96%87%E6%93%87%E9%81%8E%E4%B8%96-%E7%B4%A0%E9%82%84%E7%9C%9F%E6%88%90%E7%B5%95%E9%9F%BF-181609735.html","urlToImage":"https://s.yimg.com/uu/api/res/1.2/Dwb0rjURKlSrxEckQymOzA--~B/aD01NDE7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/en/nownews.com/ca3c4f2aee419beb49470587f3b647a2","publishedAt":"2022-06-12T18:24:32Z","content":"LeBronJamesHamLeBronJames..."},{"source":{"id":null,"name":"udn 聯合新聞網"},"author":"記者李姿瑩／即時報導","title":"Netflix深夜拋出震撼彈！宣布製拍「魷魚遊戲」第二季 - United Daily News","description":"魅力席捲全球的影集「魷魚遊戲」在2021年9月17號上線後，以28天的時間締造觀看超過16.5億小時的輝煌記錄，跨越語言...","url":"https://stars.udn.com/star/story/10091/6383433","urlToImage":"https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2022/06/13/realtime/17398558.jpg&s=Y&x=0&y=18&sw=1280&sh=852&sl=W&fw=800&exp=3600","publishedAt":"2022-06-12T17:19:54Z","content":"20219172816.5NetflixNetflix1122\r\n12 12 Netflix \r\n()\r\n2\r\n-"},{"source":{"id":null,"name":"udn 聯合新聞網"},"author":"記者林士傑／即時報導","title":"台師大讚典範！范瑋琪碩士代表致詞 在校表現曝光 - United Daily News","description":"范瑋琪（范范）因失言風波暫別演藝圈超過2年，前段時間回歸歌壇，昨自台師大國際時尚高階管理碩士在職專班順利畢業，台師大臉書...","url":"https://stars.udn.com/star/story/10091/6383424","urlToImage":"https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2022/06/13/realtime/17398296.jpg&s=Y&x=0&y=0&sw=2048&sh=1365&sl=W&fw=800&exp=3600","publishedAt":"2022-06-12T16:57:38Z","content":null},{"source":{"id":null,"name":"Ltn.com.tw"},"author":"自由時報","title":"侯友宜嘲諷陳時中確診 議員怒轟：不把他人生病當回事 - 自由時報","description":"衛福部長、中央流行疫情指揮中心指揮官陳時中12日傳出快篩陽性、確診武漢肺炎（新型冠狀病毒病，COVID-19），事後網路上出現少數人酸言酸語；新北市議員戴瑋姍也指稱，新北市長侯友宜竟在新北市疫情記者會上嘲諷陳時中「沒打1922」，引述媒體揭露，侯友宜在記者會前調侃陳時中確診，還大笑三聲。針對陳時中確診，戴瑋姍12日晚間在臉書發文指稱，這時候「關心慰問」就好，「侯市長還要酸阿中部長確診『沒打1922』」？戴瑋姍怒批侯友宜，「沒營養」、「只為政治卸責」的記者會就別開了，「侯市長昨天完全沒有公開行程，躲了一天記者，今天…","url":"https://news.ltn.com.tw/news/politics/breakingnews/3958153","urlToImage":"https://img.ltn.com.tw/Upload/news/600/2022/06/12/php8Xwnsm.jpg","publishedAt":"2022-06-12T16:37:08Z","content":null},{"source":{"id":null,"name":"Chinatimes.com"},"author":"李俊毅","title":"石斑魚被大陸禁入元兇曝光？謝龍介爆驚人內幕 - 中時新聞網 Chinatimes.com","description":"大陸宣布13日起暫停台灣石斑魚輸入，下一波被禁的可能是午仔魚、芒果、文旦，對此，國民黨台南市長參選人、台南市議員謝龍介痛批，現在大陸暫時關閉通路市場，蔡政府怎麼不是反求諸己檢討自己？「台灣這邊有沒有對用","url":"https://www.chinatimes.com/realtimenews/20220612003468-260407","urlToImage":"https://images.chinatimes.com/newsphoto/2022-06-12/656/20220612003471.jpg","publishedAt":"2022-06-12T15:56:45Z","content":"<ol></ol>"},{"source":{"id":null,"name":"YouTube"},"author":null,"title":"06/12 安永鮮物VS中信二軍全場精華 - CPBL 中華職棒","description":"中華職棒33年，鬥陣相挺!立即訂閱中華職棒CPBL官方YouTube頻道，不錯過每場比賽的精彩好球→http://bit.ly/2JKGTtd《CPBL中華職棒粉絲團》http://bit.ly/30QBUwb《追蹤IG還有更多訊息》http://bit.ly/2wn2m2B五隊全主場轉播請訂閱CPBLTV🎥h...","url":"https://www.youtube.com/watch?v=05QyGiZ2l3M","urlToImage":"https://i.ytimg.com/vi/05QyGiZ2l3M/maxresdefault.jpg","publishedAt":"2022-06-12T15:08:54Z","content":null},{"source":{"id":null,"name":"Ltn.com.tw"},"author":"自由時報","title":"柯文哲想見「這個人」 子弟兵賴香伶帶口信 - 自由時報","description":"民眾黨桃園市長參選人賴香伶，今（12）日下午拜會國民黨前台北市議員羅智強，並參訪羅智強成立的「桃園疫情關懷中心」，兩人相見歡，互贈「義民聯盟」毛巾及「真愛台灣」的T恤、帽子、祈福的福氣茶包與口罩。賴香伶並帶上台北市長柯文哲要與羅見面、要一起聊聊近日所見所聞的口信。會中，羅智強稱賴香伶是「老朋友」，並表示，當前桃園民眾擔心疫情健康威脅和生活壓力很大，他走過的商圈，攤商說物價上漲、成本高，疫情下生意凋零，快活不下去，民眾擔心生計斷糧、斷炊，關懷疫情是不分黨派，他在祈福桃園時，也歡迎參選、未參選的人，不分政黨一起來關心…","url":"https://news.ltn.com.tw/news/politics/breakingnews/3958129","urlToImage":"https://img.ltn.com.tw/Upload/news/600/2022/06/12/3958129_1_1.jpg","publishedAt":"2022-06-12T15:06:19Z","content":null},{"source":{"id":null,"name":"udn 聯合新聞網"},"author":"倫敦/基輔12日綜合外電報導","title":"俄軍猛攻北頓內茨克烏東州長估一兩天內被拿下| 聯合新聞網 - udn.com","description":"英國國防部今天指出，俄羅斯正運用在兵力比和砲火上的優勢，逐步占領烏克蘭東部北頓內茨克巿及周邊。烏東盧甘斯克州長蓋戴預計俄...","url":"https://udn.com/news/story/122663/6383201","urlToImage":"https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2022/05/25/98/17113578.jpeg&s=Y&x=0&y=0&sw=1235&sh=823&exp=3600","publishedAt":"2022-06-12T14:48:35Z","content":"LuhanskSerhiy GaidaiSeverodonetskAzot\r\nNational GuardAzov RegimentMaksym ZhorinMariupolAzovstal\r\n220\r\nTelegram"},{"source":{"id":null,"name":"Appledaily.com"},"author":"蘋果新聞網","title":"「美麗合照秒變靈異照」 美人魚正妹現身！高EQ回應「自己也笑噴」 ｜ 蘋果新聞網｜ 蘋果日報 - 蘋果新聞網","description":"花蓮知名海洋公園安排美人魚實境表演秀，美麗的人魚表演者，在透明的玻璃表演池內與遊客互動拍照，吸引不少遊客佇足觀賞，不過，可能是遊客透過玻璃窗合照加上拍照角度的關係，美麗的人魚臉部表情變形扭曲，瞬間變成「類靈異照」，笑翻不少網友，表演當事人也高EQ回應，「當下看到照片我也笑噴」...","url":"https://tw.appledaily.com/life/20220612/JUYYNPNKHBACHHYEXT2BCE27MQ/","urlToImage":"https://tw.appledaily.com/resizer/As0IzTd-6OyWU5hU9rMBQY2tleQ=/600x315/filters:quality(100)/cloudfront-ap-northeast-1.images.arcpublishing.com/appledaily/4QEP3MTT5VCPPERDIA2ISTWE6M.jpg","publishedAt":"2022-06-12T14:43:16Z","content":null},{"source":{"id":null,"name":"Appledaily.com"},"author":"蘋果新聞網","title":"2屍4命慘案｜監視器拍到「銀光上下閃」 疑錄到金剛杵擊殺瞬間｜ 蘋果新聞網｜ 蘋果日報 - 蘋果新聞網","description":"發生在高鐵桃園站附近停車場的雙屍4死命案，30多歲泰裔李氏夫妻因與同鄉又是高中同窗的泰裔男子王大賢合夥經營泰國移工仲介，雙方卻因帳目、匯兌問題發生爭執，日前相約在新北市移工宿舍談判對帳，竟遭王男以塑膠袋套頭，持疑似金剛杵的銀色棍棒先後將2人活活打死，再將遺體搬進死者的白色BM...","url":"https://tw.appledaily.com/local/20220612/6YBHXNG43BB7DD7KZNZLM3YC6I/","urlToImage":"https://tw.appledaily.com/resizer/p2UcLcN7SkXwnGGSHTS4HodUO_Q=/633x438/filters:quality(100)/cloudfront-ap-northeast-1.images.arcpublishing.com/appledaily/2UQMFTYPS5DDZP72FP57TZIEDU.jpg","publishedAt":"2022-06-12T12:53:25Z","content":null}]};</script>
+<script>data_NewsIo={"totalArticles":21332,"articles":[{"title":"MLB》「很危險！」大谷翔平與捕手相撞引日美熱議","description":"大谷翔平昨對陣大都會火力大放送，單場三安猛打還敲出本季第13轟，差一支三壘安打就能完成完全打擊，而他在3局的本壘攻防戰出局，引起日本節目的討論，同時日美雙方也都有網友針對該防守回合進行討論。大谷翔平在3局敲出一壘安打後透過倫登（Anthony Rendon）的滾地球進佔得點圈，","content":"大谷翔平發生本壘碰撞。（USA TODAY Sports）\n〔體育中心／綜合報導〕大谷翔平昨對陣大都會火力大放送，單場三安猛打還敲出本季第13轟，差一支三壘安打就能完成完全打擊，而他在3局的本壘攻防戰出局，引起日本節目的討論，同時日美雙方也都有網友針對該防守回合進行討論。\n大谷翔平在3局敲出一壘安打後透過倫登（Anthony Rendon）的滾地球進佔得點圈，接著沃許（Jared Walsh）敲出右外野安打，麥克內爾（Jeff McNeil）展現雷射肩將大谷翔平觸殺在本壘，也結束這個半局天使的進... [489 chars]","url":"https://sports.ltn.com.tw/news/breakingnews/3957962","image":"https://img.ltn.com.tw/Upload/sports/page/800S/2022/06/12/php8BwkUy.jpg","publishedAt":"2022-06-12T22:55:00Z","source":{"name":"自由時報","url":"https://sports.ltn.com.tw"}},{"title":"本週操盤筆記：超級央行週登場、Fed 6月決策會議","description":"本週進入「超級央行週」，美國、台灣、英國、日本央行都將宣布貨幣政策決議，預料美國和英國都將延續 5 月升速，各自升息 2 碼、1 碼，台灣幾乎篤定升息，日本則按兵不動。\n本週操盤筆記 (0613-0617)\n1.Fed 6 月決策會議、最新經濟預測\n本週是超級央行週，以週四為重頭戲，最受矚目","content":"本週進入「超級央行週」，美國、台灣、英國、日本央行都將宣布貨幣政策決議，預料美國和英國都將延續 5 月升速，各自升息 2 碼、1 碼，台灣幾乎篤定升息，日本則按兵不動。\n本週操盤筆記 (0613-0617)\n1.Fed 6 月決策會議、最新經濟預測\n本週是超級央行週，以週四為重頭戲，最受矚目的莫過於美國聯準會 (Fed)。\n市場預料 Fed 本週將升息 2 碼 (50 個基點)，把聯邦資金利率目標區間升至 1.25-1.50%。但因美國上週五公布的 5 月消費者物價指數 (CPI) 意外竄升至 ... [658 chars]","url":"https://news.cnyes.com/news/id/4890077","image":"https://cimg.cnyes.cool/prod/news/4890077/l/d79085f3d0cfa923a5d572dd1fdaea0d.jpg","publishedAt":"2022-06-12T22:00:04Z","source":{"name":"Anue鉅亨","url":"https://news.cnyes.com"}},{"title":"到底砸多少！女神異聞錄345進駐XGP 網友狂喊超香跪求中文化","description":"13日凌晨舉辦的Xbox & Bethesda Games Showcase發表會中，微軟宣布ATLUS旗下經典巨作「女神異聞錄」系列《女神異聞錄 3 攜帶版》（Persona 3 Portable）、《女神異聞錄 4 黃金版》（Persona 4 Golden）及《女神異聞錄 5 皇家版》全數登陸Xbox Game Pass（XGP）中，讓許多粉絲暴動狂喊，「微軟，我的超人！」\r\n\r\n(女神異聞錄)","content":"記者蘇晟彥／綜合報導\n13日凌晨舉辦的Xbox & Bethesda Games Showcase發表會中，微軟宣布ATLUS旗下經典巨作「女神異聞錄」系列《女神異聞錄 3 攜帶版》（Persona 3 Portable）、《女神異聞錄 4 黃金版》（Persona 4 Golden）及《女神異聞錄 5 皇家版》全數登陸Xbox Game Pass（XGP）中，讓許多粉絲暴動狂喊，「微軟，我的超人！」\n以超經典的JRPG加上獨特系統、內容，更在P5心之怪盜團將聲勢推上巔峰的ATLUS作品《女神異... [303 chars]","url":"https://game.ettoday.net/article/2271439.htm","image":"https://cdn2.ettoday.net/images/6393/d6393520.jpg","publishedAt":"2022-06-12T21:12:00Z","source":{"name":"ETtoday遊戲雲","url":"https://game.ettoday.net"}},{"title":"魏鳳和：膽敢分裂台灣 不惜一戰打到底 陸委會：藐視國際關係和平原則的宣戰行徑","description":"中國大陸國防部長魏鳳和昨（12）日於新加坡香格里拉對話會議發表演講，警示台灣若從中國分裂出去，中共解放軍將「不惜一戰、不惜代價，一定會打到底」。這是魏鳳和繼10日與美國防長奧斯汀見面之後，在3天內二度發出","content":"烏克蘭總統澤倫斯基被問及台海議題時謹慎地表示，應以外交手段解決紛爭。（摘自烏克蘭總統府官網）\n中國大陸國防部長魏鳳和昨（12）日於新加坡香格里拉對話會議發表演講，警示台灣若從中國分裂出去，中共解放軍將「不惜一戰、不惜代價，一定會打到底」。這是魏鳳和繼10日與美國防長奧斯汀見面之後，在3天內二度發出相同警告。\n大陸防長 3天內2度發出警告\n對此，陸委會昨回應，魏鳳和在國際場域對台文攻武嚇，是藐視國際關係和平原則的宣戰行徑，證明北京當局是製造區域嚴重不安的根源，強調中共企圖「以武逼統」終將自食惡果。... [932 chars]","url":"https://www.chinatimes.com/newspapers/20220613000306-260108","image":"https://images.chinatimes.com/newsphoto/2022-06-13/656/B01A00_P_01_02.jpg","publishedAt":"2022-06-12T20:10:00Z","source":{"name":"中時新聞網 Chinatimes.com","url":"https://www.chinatimes.com"}},{"title":"侯友宜嘲諷陳時中確診 議員怒轟：不把他人生病當回事","description":"衛福部長、中央流行疫情指揮中心指揮官陳時中12日傳出快篩陽性、確診武漢肺炎（新型冠狀病毒病，COVID-19），事後網路上出現少數人酸言酸語；新北市議員戴瑋姍也指稱，新北市長侯友宜竟在新北市疫情記者會上嘲諷陳時中「沒打1922」，引述媒體揭露，侯友宜在記者會前調侃陳時中確診，還大笑三聲。針對陳時中確診，戴瑋姍12日晚間在臉書發文指稱，這時候「關心慰問」就好，「侯市長還要酸阿中部長確診『沒打1922』」？戴瑋姍怒批侯友宜，「沒營養」、「只為政治卸責」的記者會就別開了，「侯市長昨天完全沒有公開行程，躲了一天記者，今天防疫記者會只能暗嘲阿中部長」？","content":"新北市長侯友宜12日出席疫情記者會。（資料照）\n2022/06/13 00:37\n〔即時新聞／綜合報導〕衛福部長、中央流行疫情指揮中心指揮官陳時中12日傳出快篩陽性、確診武漢肺炎（新型冠狀病毒病，COVID-19），事後網路上出現少數人酸言酸語；新北市議員戴瑋姍也指稱，新北市長侯友宜竟在新北市疫情記者會上嘲諷陳時中「沒打1922」，引述媒體揭露，侯友宜在記者會前調侃陳時中確診，還大笑三聲。\n針對陳時中確診，戴瑋姍12日晚間在臉書發文指稱，這時候「關心慰問」就好，「侯市長還要酸阿中部長確診『沒打1... [730 chars]","url":"https://news.ltn.com.tw/news/politics/breakingnews/3958153","image":"https://img.ltn.com.tw/Upload/news/600/2022/06/12/php8Xwnsm.jpg","publishedAt":"2022-06-12T16:37:08Z","source":{"name":"自由時報","url":"https://news.ltn.com.tw"}},{"title":"霹靂大師黃文擇為八音才子 身後口白聲音永留於世","description":"「半神半聖亦半仙，全儒全道是全賢，腦中真書藏萬卷，掌握文武半邊天」，躍上國際舞台的偶劇名角素還真的口白，幾乎是每個偶迷耳...","content":"「半神半聖亦半仙，全儒全道是全賢，腦中真書藏萬卷，掌握文武半邊天」，躍上國際舞台的偶劇名角素還真的口白，幾乎是每個偶迷耳熟能詳的詩句，這也是黃文擇經典的配音，開啟了霹靂大戲的新紀元，黃文擇和哥哥黃強華把黃家布袋戲帶到最高峰，為台灣偶戲寫下新史頁。\n霹靂國際多媒體副董事長黃文擇，20多歲出道，仍和父親一樣演野台戲起家，在1983年從野台戲轉為電視劇後，就投入霹靂影劇，30年來演活了素還真，成為繼父親黃俊雄的史艷文之後，成為台灣最具代表性的偶劇，戲迷遍布國際。\n黃文擇承襲父親黃俊雄的獨特的口音技巧，... [1092 chars]","url":"https://udn.com/news/story/7314/6383397","image":"https://pgw.udn.com.tw/gw/photo.php?u=https://uc.udn.com.tw/photo/2022/06/13/realtime/17397667.jpg&s=Y&x=66&y=0&sw=1146&sh=764&exp=3600","publishedAt":"2022-06-12T16:05:05Z","source":{"name":"udn.com","url":"https://udn.com"}},{"title":"柯文哲想見「這個人」 子弟兵賴香伶帶口信","description":"民眾黨桃園市長參選人賴香伶，今（12）日下午拜會國民黨前台北市議員羅智強，並參訪羅智強成立的「桃園疫情關懷中心」，兩人相見歡，互贈「義民聯盟」毛巾及「真愛台灣」的T恤、帽子、祈福的福氣茶包與口罩。賴香伶並帶上台北市長柯文哲要與羅見面、要一起聊聊近日所見所聞的口信。會中，羅智強稱賴香伶是「老朋友」，並表示，當前桃園民眾擔心疫情健康威脅和生活壓力很大，他走過的商圈，攤商說物價上漲、成本高，疫情下生意凋零，快活不下去，民眾擔心生計斷糧、斷炊，關懷疫情是不分黨派，他在祈福桃園時，也歡迎參選、未參選的人，不分政黨一起來關心桃園疫情。","content":"賴香伶（左）拜會羅智強（右），賴代轉代柯文哲口信。（記者李容萍攝）\n2022/06/12 23:06\n〔記者李容萍／桃園報導〕民眾黨桃園市長參選人賴香伶，今（12）日下午拜會國民黨前台北市議員羅智強，並參訪羅智強成立的「桃園疫情關懷中心」，兩人相見歡，互贈「義民聯盟」毛巾及「真愛台灣」的T恤、帽子、祈福的福氣茶包與口罩。賴香伶並帶上台北市長柯文哲要與羅見面、要一起聊聊近日所見所聞的口信。\n會中，羅智強稱賴香伶是「老朋友」，並表示，當前桃園民眾擔心疫情健康威脅和生活壓力很大，他走過的商圈，攤商說物... [609 chars]","url":"https://news.ltn.com.tw/news/politics/breakingnews/3958129","image":"https://img.ltn.com.tw/Upload/news/600/2022/06/12/3958129_1_1.jpg","publishedAt":"2022-06-12T15:06:19Z","source":{"name":"自由時報","url":"https://news.ltn.com.tw"}},{"title":"台東縣體育館施工移燕窩 144隻小雨燕成孤兒嗷嗷待哺","description":"台東縣立體育館近日進行優化改善工程，施工時發現梁柱上有許多小雨燕，縣府打造15座木製鳥屋，欲將小雨燕移到新家。不過，原本的窩遭到移動，親鳥不敢回巢，導致144隻小雨燕成了孤兒，此舉也遭到保育人士非議。臉書粉專「獸醫小珈與野生動物朋友們」今（12）日發文指出，由於小雨燕的習性特殊，若不是特殊設計的鳥窩，以及經過預先設計好的方式移巢，基本上幼鳥只能慢慢在這個「新家」裡等待死亡，所幸在各方熱心人士奔走下，這批小雨燕被順利救援到東部的「野灣野生動物保育協會」，將以人工方式餵養長大。","content":"因為台東縣體育館優化工程，144隻小雨燕失親。（圖取自臉書/WildOne野灣野生動物保育協會，本報合成。）\n2022/06/12 21:44\n〔即時新聞／綜合報導〕台東縣立體育館近日進行優化改善工程，施工時發現梁柱上有許多小雨燕，縣府打造15座木製鳥屋，欲將小雨燕移到新家。不過，原本的窩遭到移動，親鳥不敢回巢，導致144隻小雨燕成了孤兒，此舉也遭到保育人士非議。\n臉書粉專「獸醫小珈與野生動物朋友們」今（12）日發文指出，由於小雨燕的習性特殊，若不是特殊設計的鳥窩，以及經過預先設計好的方式移巢，... [539 chars]","url":"https://news.ltn.com.tw/news/life/breakingnews/3958038","image":"https://img.ltn.com.tw/Upload/news/600/2022/06/12/php8C8X3z.jpg","publishedAt":"2022-06-12T13:44:22Z","source":{"name":"自由時報","url":"https://news.ltn.com.tw"}},{"title":"中職》外傳韓職挖角 鋼龍:我很念舊、不會輕易離開","description":"今天洲際龍象大戰，味全龍洋投鋼龍先發8局被敲5安，另有7K、2次保送，失2分拿下本季第3勝和單場MVP，率領球隊以5:2擊敗中信兄弟。鋼龍前8局主宰戰局，僅被敲3安，期間讓對手14上14下，9局上遭遇亂流，保送首棒林書逸，接著被兩名代打林志綱、詹子賢敲安掉分，無人出局一、三壘有人，此時味全緊急推出守","content":"味全龍先發投手鋼龍。（記者廖耀東攝）\n〔記者羅志朋／台中報導〕今天洲際龍象大戰，味全龍洋投鋼龍先發8局被敲5安，另有7K、2次保送，失2分拿下本季第3勝和單場MVP，率領球隊以5:2擊敗中信兄弟。\n鋼龍前8局主宰戰局，僅被敲3安，期間讓對手14上14下，9局上遭遇亂流，保送首棒林書逸，接著被兩名代打林志綱、詹子賢敲安掉分，無人出局一、三壘有人，此時味全緊急推出守護神伍鐸救火，先製造雙殺，失1分記在鋼龍帳上，再解決陳子豪終結比賽。\n請繼續往下閱讀...\n鋼龍來台還沒投過完封，他說，的確很久沒投到第... [465 chars]","url":"https://sports.ltn.com.tw/news/breakingnews/3958101","image":"https://img.ltn.com.tw/Upload/sports/page/800S/2022/06/12/phpU0Czpk.jpg","publishedAt":"2022-06-12T13:42:00Z","source":{"name":"自由時報","url":"https://sports.ltn.com.tw"}},{"title":"PLG》40歲「野獸」林志傑燃燒轟27分 勇士二度延長淘汰夢想家","description":"P. LEAGUE+首次二度延長賽就出現在季後賽，昨才滿40歲的「野獸」林志傑今天表現超神勇，攻下27分，加上辛特力拿37分，台北富邦勇士以119：111淘汰台新夢想家，系列賽以3勝1敗晉級，率先挺進P. LEAGUE+總冠軍戰，續朝衛冕之路邁進。","content":"勇士擊敗夢想家晉級總冠軍賽。（記者方賓照攝）\n〔記者吳孟儒／台北報導〕P. LEAGUE+首次二度延長賽就出現在季後賽，昨才滿40歲的「野獸」林志傑今天表現超神勇，攻下27分，加上辛特力拿37分，台北富邦勇士以119：111淘汰台新夢想家，系列賽以3勝1敗晉級，率先挺進P. LEAGUE+總冠軍戰，續朝衛冕之路邁進。\n勇士前一戰發生多達25次失誤，上半場就出現14次，全隊打得荒腔走板而吞敗，今天雖成功修正問題，兩節縮減至5次，進攻卻找不到準星，只有31.7％，辛特力15分是全隊唯一得分雙位數，至... [928 chars]","url":"https://sports.ltn.com.tw/news/breakingnews/3958061","image":"https://img.ltn.com.tw/Upload/sports/page/800S/2022/06/12/phpJzvhOi.jpg","publishedAt":"2022-06-12T12:11:00Z","source":{"name":"自由時報","url":"https://sports.ltn.com.tw"}}]};</script>
+<code id="yahoo" style="display:none">[{"title":"菲律賓布魯珊火山又噴發！ 城鎮只剩下「灰色」", "jpg":"https://s.yimg.com/uu/api/res/1.2/HYZ6_8ygQ2SbnIs_F.sloQ--~B/aD01NzY7dz0xMDI0O2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/ko/news_ttv_com_tw_433/e1026d68919c2a27686e866f5ba3bba5", "link":"https://tw.news.yahoo.com/%E8%8F%B2%E5%BE%8B%E8%B3%93%E5%B8%83%E9%AD%AF%E7%8F%8A%E7%81%AB%E5%B1%B1%E5%8F%88%E5%99%B4%E7%99%BC-%E5%9F%8E%E9%8E%AE%E5%8F%AA%E5%89%A9%E4%B8%8B-%E7%81%B0%E8%89%B2-232634554.html", "dsc":"菲律賓呂宋島的布魯珊火山，這個月6號爆發之後，週日12號又再度噴發，大量火山灰噴得又高又遠，附近好幾個城鎮統統披上一層厚厚的火山灰，不但到處灰濛濛，能見度非常差，民眾生活也大受影響，幸好這次火山大噴發"},
+{"title":"禁銷石斑魚 學者：大陸長期讓利我國被慣壞", "jpg":"https://s.yimg.com/uu/api/res/1.2/Vq7ik82ylehxWuDcKjabcg--~B/aD00NTI7dz04NTg7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/ko/ctwant_com_582/df34413b461a95cc9fca24030aa54c74", "link":"https://tw.news.yahoo.com/%E7%A6%81%E9%8A%B7%E7%9F%B3%E6%96%91%E9%AD%9A-%E5%AD%B8%E8%80%85-%E5%A4%A7%E9%99%B8%E9%95%B7%E6%9C%9F%E8%AE%93%E5%88%A9%E6%88%91%E5%9C%8B%E8%A2%AB%E6%85%A3%E5%A3%9E-232104190.html", "dsc":"[周刊王CTWANT]"},
+{"title":"恩恩爸至新北消防局聽錄音 確認譯文沒有的「這句話」", "jpg":"https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png", "link":"https://tw.news.yahoo.com/%E6%81%A9%E6%81%A9%E7%88%B8%E8%87%B3%E6%96%B0%E5%8C%97%E6%B6%88%E9%98%B2%E5%B1%80%E8%81%BD%E9%8C%84%E9%9F%B3-%E7%A2%BA%E8%AA%8D%E8%AD%AF%E6%96%87%E6%B2%92%E6%9C%89%E7%9A%84-%E9%80%99%E5%8F%A5%E8%A9%B1-221824898.html", "dsc":"恩恩事件有新進展，恩恩爸今天凌晨在臉書發文，表示昨天下午已聯絡新北市消防局，要重聽一遍錄音檔，確認接電話的執勤員是否有說..."},
+{"title":"陳時中染疫有重症危險？黃立民曝關鍵因素：第5天要小心", "jpg":"https://s.yimg.com/uu/api/res/1.2/n9ZSBpY4L7rvwmPj3kk63Q--~B/aD00NTA7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/ko/setn.com.tw/92a594de57c8c93533a4b00acb000459", "link":"https://tw.news.yahoo.com/%E9%99%B3%E6%99%82%E4%B8%AD%E6%9F%93%E7%96%AB%E6%9C%89%E9%87%8D%E7%97%87%E5%8D%B1%E9%9A%AA-%E9%BB%83%E7%AB%8B%E6%B0%91%E6%9B%9D%E9%97%9C%E9%8D%B5%E5%9B%A0%E7%B4%A0-%E7%AC%AC5%E5%A4%A9%E8%A6%81%E5%B0%8F%E5%BF%83-222508607.html", "dsc":"政治中心／林昀萱報導 衛福部長、中央流行疫情指揮中心指揮官陳時中昨（12）日上午自覺有痠痛、打噴嚏、流鼻水等狀況，使用家用快篩檢驗，結果為陽性，已透過視訊看診判定為確"},
+{"title":"北京爆酒吧疫情 官方認有擴散風險", "jpg":"https://s.yimg.com/uu/api/res/1.2/yVxC9RChM48D_0lQsoXyEg--~B/aD01NDQ7dz04MDA7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/zh-tw/nownews.com/f22a26e29817fa8a4d9c900197b78008", "link":"https://tw.news.yahoo.com/%E5%8C%97%E4%BA%AC%E7%88%86%E9%85%92%E5%90%A7%E7%96%AB%E6%83%85-%E5%AE%98%E6%96%B9%E8%AA%8D%E6%9C%89%E6%93%B4%E6%95%A3%E9%A2%A8%E9%9A%AA-223154874.html", "dsc":"中國北京近日新冠疫情膠著，以「天堂超市」酒吧為主的群聚感染似乎在持續擴大，官方直言酒吧群聚案疫情「兇猛」，恐有外溢擴散之虞。綜合中媒報導，北京市週日至少新增33例本土，均已轉至定點醫院隔離治療。北京市..."},
+{"title":"美股遭通膨重擊 台股備戰 推演三情境", "jpg":"https://s.yimg.com/cv/apiv2/social/images/yahoo_default_logo-1200x1200.png", "link":"https://tw.news.yahoo.com/%E7%BE%8E%E8%82%A1%E9%81%AD%E9%80%9A%E8%86%A8%E9%87%8D%E6%93%8A-%E5%8F%B0%E8%82%A1%E5%82%99%E6%88%B0-%E6%8E%A8%E6%BC%94%E4%B8%89%E6%83%85%E5%A2%83-224200149.html", "dsc":"美股四大指數上周五（10日）重挫，引動台指期夜盤大跌214點，市場氛圍再度豬羊變色。市場專預估，台股今天開盤恐失守月線大..."},
+{"title":"台灣等56個WTO成員連署聲明關切糧食安全！俄羅斯與中國不願加入", "jpg":"https://s.yimg.com/uu/api/res/1.2/LWm_dJlDcLEyfrNN6hi7yQ--~B/aD03NjE7dz05NDY7YXBwaWQ9eXRhY2h5b24-/https://media.zenfs.com/ko/newtalk.tw/1cba5066104cb2882d4160b42612d0e6", "link":"https://tw.news.yahoo.com/%E5%8F%B0%E7%81%A3%E7%AD%8956%E5%80%8Bwto%E6%88%90%E5%93%A1%E9%80%A3%E7%BD%B2%E8%81%B2%E6%98%8E%E9%97%9C%E5%88%87%E7%B3%A7%E9%A3%9F%E5%AE%89%E5%85%A8-%E4%BF%84%E7%BE%85%E6%96%AF%E8%88%87%E4%B8%AD%E5%9C%8B%E4%B8%8D%E9%A1%98%E5%8A%A0%E5%85%A5-232742582.html", "dsc":"[新頭殼newtalk] 世貿組織（WTO）部長級會議12日在瑞士日內瓦召開。台灣方面由行政院政務委員鄧振中代表出席，美國由貿易代表戴琪（Katherine Tai）與會。包括台灣、美國在內共56個WTO成員12日發表聯合聲明，除聲援烏克蘭外，也對烏克蘭遭到入侵帶來的糧食安全問題表達擔憂，並尋求協助烏克蘭生產與出口。 包括台灣、日本、美國、德國、歐盟在內的56個WTO成員發表聯合聲明，聲援遭到俄羅斯軍事入侵的烏克蘭，並對烏克蘭的人員損失與苦難表示深感悲痛。俄羅斯與中國並未加入連署。聲明提到，這場戰爭帶來毀滅性影響，包括烏克蘭的經濟與貿易，烏克蘭交通基礎設施也遭到巨大破壞，嚴重阻礙烏克蘭生產、出口與進口能力。 聲明嚴重關切這類破壞對烏克蘭和全球貿易的影響，特別是針對烏克蘭生產部分主要商品向國際市場的供應狀況，包括農產品、食品、化肥、葵花油與關鍵礦物等。各國部長也對大量關於烏克蘭遭掠奪糧食的報導深表關切，直指這些行為與WTO原則和價值觀背道而馳。強烈譴責針對烏克蘭生產與出口到世界所需的供應、生產與運輸手段的任何行動，包括農產品在內。 聲明強調保持開放與可預測市場以及烏克蘭貿易能力的重要性，"},
+{"title":"轉月子中心前男嬰快篩陽！接生醫院快篩全陰 查嘸感染源", "jpg":"https://s.yimg.com/uu/api/res/1.2/7Mh5v948qNGHDRIbbkXM.w--~B/aD01OTY7dz0xMDYwO2FwcGlkPXl0YWNoeW9u/https://media.zenfs.com/ko/news_tvbs_com_tw_938/e8742b125cd165b79a0efe43b2e81487", "link":"https://tw.news.yahoo.com/%E8%BD%89%E6%9C%88%E5%AD%90%E4%B8%AD%E5%BF%83%E5%89%8D%E7%94%B7%E5%AC%B0%E5%BF%AB%E7%AF%A9%E9%99%BD-%E6%8E%A5%E7%94%9F%E9%86%AB%E9%99%A2%E5%BF%AB%E7%AF%A9%E5%85%A8%E9%99%B0-%E6%9F%A5%E5%98%B8%E6%84%9F%E6%9F%93%E6%BA%90-135621919.html", "dsc":"高雄一名孕婦6日在苓雅區，一間區域醫院產下一名男嬰，沒想到12日要轉到月子中心，卻發現快篩陽性，由於男嬰的爸媽都沒有染疫，懷疑小孩在醫院遭到感染，但市府緊急了解，發現醫院相關人員快篩後全部是陰性，因此感染源還得進一步釐清。"}]</code>
+<code id="udn"   style="display:none">[{"title":"蔣萬安：北市長選戰 不會是「佛系」打法", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/51055_head_photo_file.jpg?20220613085904&exp=3600", "link":"https://udn.com/news/story/122682/6383371?from=udn_ch2_menu_v2_main_index", "dsc":"九合一大選十一月廿六日投票，這是新冠疫情爆發後國內第一場重大選舉，被視為二○二四總統大選的前哨戰。聯合報採訪參選人和一級..."},
+{"title":"6月最新優惠！生日有這4碼 玩樂園只要100元", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/46048_head_photo_file.jpg?20220610174546&exp=3600", "link":"https://udn.com/news/story/7934/6374430?trl?from=udn_ch2_menu_v2_main_index", "dsc":"進入六月，為了迎接暑假及畢業季到來，五大樂園分別推出本月限定折扣，小人國強勢推出「百元專案」，只要生日的年月日裡有1、2、５或６，入園只要百元！義大世界則推出疫苗優惠，只要333元，六福村、麗寶樂園、劍湖山世界及也推出許多優惠，準備搶攻暑假人潮。"},
+{"title":"新光三越董事會 吳昕陽再面對泛新光集團壓力", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/01/19/realtime/15421759.jpg&s=Y&x=0&y=11&sw=1280&sh=852&exp=3600", "link":"https://udn.com/news/story/7239/6383516?from=udn_ch2_menu_v2_main_index", "dsc":"百貨龍頭新光三越經營權之爭再起，今（13）日該公司舉行新屆董事會推舉董事長、副董事長，日籍董事長村上英之料將續任，但昨日..."},
+{"title":"周運勢／巨蟹當心財務糾紛 水瓶恐出現第三者", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/22458_head_photo_file.jpg?20220612134956&exp=3600", "link":"https://udn.com/news/story/7268/6376205?from=udn_ch2_menu_v2_main_index", "dsc":"巨蟹人際關係方面，在人際關係宮位的金星受到土星影響，會被週遭的親朋好友情緒勒索，軟硬兼施，被要求購買保險，或是幫忙做業績。某些巨蟹座則要當心與人發生財務糾紛，借出去的錢無法討回。"},
+{"title":"旅外大物從缺 今年中職選秀將是2019年翻版", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/01/26/0/15584479.jpg&s=Y&x=0&y=0&sw=1280&sh=853&exp=3600", "link":"https://udn.com/news/story/122629/6383024?from=udn_ch2_menu_v2_main_index", "dsc":"今年中職季中選秀將於7月11日登場，第6隊台鋼雄鷹首度參與選秀，這屆與2019年味全龍首度投入選秀極為相似，都沒有特別突出的旅外好手，不過，大學、甲組成棒有不錯的球員可挑，就看台鋼的眼光是否精準。"},
+{"title":"高雄多區夜間飄臭味 環保局漏夜稽查禍首是它", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/06/13/realtime/17403868.jpg&s=Y&x=111&y=0&sw=1059&sh=707&exp=3600", "link":"https://udn.com/news/story/7327/6383557?from=udn_ch2_menu_v2_main_index", "dsc":"高雄市從昨天深夜起多區陸續傳出惡臭味，包括鳳山、三民、鼓山、左營、小港等區都有民眾打1999，抱怨空氣中聞到濃濃的「屎味..."},
+{"title":"以客為尊的服務業？談公務機關長年的行政弊病", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/06/08/0/17305408.jpeg&s=Y&x=42&y=0&sw=1175&sh=783&sl=W&fw=800", "link":"https://opinion.udn.com/opinion/story/121013/6372340?from=udn_ch2_menu_v2_main_index", "dsc":"還等不到與病毒和平共存，醫療院所已遍地烽火。5月12日護理師節前夕，各大醫療工會集結在指揮中心前哀鳴「請問是要我們做到死嗎？」工會指出，平常就負荷滿載，如今護理師從一人照顧五人變成二十人，一天工作16小時以上，有護理師表示：「不僅沒有休息，連喝一口水都是奢求。」要是染疫了不是繼續工作，就是乾脆不篩檢當沒事。"},
+{"title":"找出飆股，在優質股票被錯殺時抓住時機投資", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/46082_head_photo_file.png?20220613003327&exp=3600", "link":"https://udn.com/news/story/12674/6345441?from=udn_ch2_menu_v2_main_index", "dsc":"馬克．馬哈尼分析科技產業將近25年。他看準亞馬遜、Netflix、Google、Priceline等公司的成長潛力，在公司發展早期就給予買進評等，而且多年來少有改變。如果按照他的建議，每一檔股票都可以賺到10倍至70倍。馬哈尼分享過往25年成功與失敗的選股判斷中所學到的教訓。帶領讀者走入商業網路的歷史，看到哪些公司因為網路泡沫而成功，又如何因為網路泡沫破滅而失敗，並說明哪些因素會帶動高成長科技股的股價。"},
+{"title":"專訪烏克蘭出版人：抗俄的圖書文化游擊戰", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/95500_head_photo_file.jpg?20220612111811&exp=3600", "link":"https://global.udn.com/global_vision/story/8664/6378812?direct?from=udn_ch2_menu_v2_main_index", "dsc":"睽違兩年踏入世貿展場，身為向來方向感欠佳的版權經紀人，今年還是沒長進，迷失了好一陣子才終於抵達烏克蘭攤位。大老遠我就看見她了，華倫堤娜．布坦可（Valentina Butenko），烏克蘭出版龍頭Yakaboo國際事務主任，一身白色套裝氣勢十足，有條不紊地排練對談問答。"},
+{"title":"6歲男確診後急性猛爆肝炎 靠洗肝撿回一命", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/06/13/realtime/17403445.jpg&s=Y&x=135&y=0&sw=972&sh=648&exp=3600", "link":"https://udn.com/news/story/7266/6383531?from=udn_ch2_menu_v2_main_index", "dsc":"台大醫院雲林分院婦幼醫學中心最近報告一個6歲男童病例，在發病後不僅出現肺炎、腦水腫，同時還發生死亡率高達8成的猛爆性肝炎..."},
+{"title":"起床見iPhone插進去就嚇醒!杯麵充電器太逼真", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/06/12/0/17382977.jpg&s=Y&x=64&y=0&sw=1061&sh=707&exp=3600", "link":"https://udn.com/news/story/7088/6381830?from=udn_ch2_menu_v2_main_index", "dsc":"每天爬不太起來，想要有個東西「醒腦」一下嗎？日本知名大廠日清食品（Nissin）推出創意概念產品「手機杯麵充電器」，整個模樣讓你一起床真的就會「驚醒」，讓不少鐵粉大讚超有趣，直呼「拜託開賣」。"},
+{"title":"《最後》PS5重製反應兩極 豪華版照樣賣光", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/06/11/0/17377095.png&s=Y&x=0&y=0&sw=1280&sh=720&sl=W&fw=800", "link":"https://game.udn.com/game/story/122089/6381673?game?from=udn_ch2_menu_v2_main_index", "dsc":"本屆電玩盛會夏日遊戲節於昨（10）日舉行，《最後生還者》重製版《最後生還者首部曲》（The Last of Us Part I）宣布將於 9 月 2 日在 PS5 推出，然而曝光的畫面引發粉絲兩極反應"},
+{"title":"「八音才子」念詩成絕響 黃文擇逝世享年67歲", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=http://uc.udn.com.tw/photo/2022/06/12/realtime/17397295.jpg&s=Y&x=0&y=0&sw=5184&sh=3456&sl=W&fw=800&exp=3600", "link":"https://stars.udn.com/star/story/10091/6383347?from=udn_ch2_menu_v2_main_index", "dsc":"風靡全台逾30年的「素還真」電影由「十車書」黃強華編導、「八音才子」黃文擇配音，日前還入圍台北電影節4大獎，豈料，12日..."},
+{"title":"Rosé纖腰挖洞 辣尬三吉彩花秀白皙美腿", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/21435_head_photo_file.jpg?20220612162737&exp=3600", "link":"https://style.udn.com/style/story/8085/6382577?udntab?from=udn_ch2_menu_v2_main_index", "dsc":"Tiffany & Co. 《匠心妙藝》品牌展覽日前於倫敦薩奇美術館（Saatchi Gallery）舉辦開幕晚會，多位..."},
+{"title":"連呼吸都會死！《空氣殺人》改編韓國真實事件", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/7710_head_photo_file.jpg?20220608160617&exp=3600", "link":"https://udn.com/umedia/story/12760/6356112?from=udn_ch2_menu_v2_main_index", "dsc":""},
+{"title":"魚油能防乾眼症嗎?美醫學會期刊最新研究出爐", "jpg":"https://pgw.udn.com.tw/gw/photo.php?u=https://guc.udn.com.tw/photo/tab/photo/4454_head_photo_file.jpg?20220612170424&exp=3600", "link":"https://health.udn.com/health/story/6034/6381905?from=udn_ch2_menu_v2_main_index", "dsc":"美國醫學會期刊JAMA Ophthalmology（眼科學）今天（2022-6-9）發表兩篇跟魚油相關的論文：臨床研究：Efficacy of Marine ω-3 Fatty Acid Su"}]</code>
+

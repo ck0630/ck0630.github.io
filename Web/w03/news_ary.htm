@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery-ui-1.11.4.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.floatThead.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://ck0630.github.io/Api/getHttp_local.js"></script>
+  <style type="text/css">
+    .dv_row
+    {
+      width: 25%;
+      float: left;
+    }
+    @media (max-width: 600px)
+    {
+      .dv_row
+      {
+        width: 33%;
+      }
+    }
+    .dv
+    {
+      width: 90%;
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 22px;
+    }
+    .style3
+    {
+      width: 100%;
+      height: auto;
+      min-height: 100px;
+      border: 0;
+      border-radius: 22px;
+      box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+    }
+    #sp1 {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      z-index: 999;
+    }
+  </style>
+  <script>
+    var urlYahoo = "https://tw.news.yahoo.com/";
+    var urlUdn = "https://udn.com/news/index";
+    var index = 0;
+    var dvary=[[],[],[],[],[]];
+
+    function addCache(s1, s2, s3, s4) {
+      var s=s2+"||"+s3+"||"+s4;
+      window.localStorage[s1]=s;  
+    }    
+
+    function getCache(url) {
+      var s=window.localStorage[url];
+      if (s==undefined) s="";
+      return s;
+    }
+
+    function addOne(s1, s2, s3, s4, s5) {
+      var n=index % 4 + 1;
+      if ($(document).width()<=600)
+         n=index % 3 + 1;
+      var dvn="#dv"+n;
+      if (s4!="") s4="<br/>"+s4;
+      var s6='<div class="dv"><table><tr><td><a class="variousi" href="'+s1+'" target="second">'+
+        '<img class="style3" src="'+s2+'" data-src="'+s2+'">'+
+        '</a></td></tr><tr><td><p style="word-break:break-all">'+
+        '<b>'+s3+'</b>'+s4+'</p></td></tr></table></div>';
+      if (s5=="append")
+      {  
+         $(dvn).append(s6);
+
+      }
+      if (s5=="insert")
+      {
+         $(dvn).html(s6+$(dvn).html());
+      }   
+      index ++;
+    }
+
+    function getDataJson_udn(fromUrl) {
+      getHttp(fromUrl, function (html) {
+        var s=html.stringBetween("__UDN__.newsLists =", "];")+"]";
+        eval("var ary="+s);
+        for (var a=0; a<ary.length; a++) {
+          var o=ary[a];
+          if (o.type=="picture") {
+             var url=o.titleLink;
+             if (!url.includes("news"))
+                continue;
+             if (url.includes("?")) 
+                url=url.substring(0, url.indexOf("?"));
+             var s=getCache(url);
+             if (s!="") {
+                var sa=s.split(["||"]);
+                addOne(url, sa[0], sa[1], sa[2], "append");
+                continue;
+             }
+             var html2=getHttpCache(url, //86400);
+             function (html2) {
+               if (html2 != "") {
+                 var list2=$(html2).filter("meta");
+                 var s1=list2.filter("[property='og:url']")[0].content;
+                 var s2=list2.filter("[property='og:image']")[0].content;
+                 var s3=list2.filter("[property='og:title']")[0].content;
+                 var s4=list2.filter("[property='og:description']")[0].content;
+                 //addOne(s1, s2, s3, s4, "insert");
+                 addOne(s1, s2, s3, s4, "append");
+                 addCache(s1, s2, s3, s4);
+               }
+             }, 86400);
+          }
+        }
+      });
+    }
+
+    function getDataJson_yahoo(fromUrl) {
+      getHttp(fromUrl, function (html) {
+        var list=$(html).find("#Col1-1-Hero-Proxy li");
+        for (var a=0; a<list.length; a++) {
+          var o=$(list[a]);
+          var url=o.find("a")[0].href;
+          if (!url.includes("news"))
+             continue;
+          var s=getCache(url);
+          if (s!="") {
+             var ary=s.split(["||"]);
+             addOne(url, ary[0], ary[1], ary[2], "append");
+             continue;
+          }
+          var html2=getHttpCache(url, //86400);
+          function (html2) {
+            if (html2 != "") {
+              var list2=$(html2).filter("meta");
+              var s1=list2.filter("[property='og:url']")[0].content;
+              var s2=list2.filter("[property='og:image']")[0].content;
+              var s3=list2.filter("[property='og:title']")[0].content;
+              var s4=list2.filter("[property='og:description']")[0].content;
+              if (s2.includes("yahoo_default_logo")) {
+                var list=$(html).find("#Col1-1-Hero-Proxy li");
+                for (var a=0; a<list.length; a++) {
+                  var o=$(list[a]);
+                  var url=o.find("a")[0].href;
+                  if (url==s1) {
+                    try {
+                      s2=o.find("img")[0].src;
+                    } catch(e) {}  
+                    break;
+                  }
+                }
+              }
+              //addOne(s1, s2, s3, s4, "insert");
+              addOne(s1, s2, s3, s4, "append");
+              addCache(s1, s2, s3, s4);
+            }
+          }, 86400);
+        }
+      });
+    }
+
+    var newIndex = 0;
+
+    $(window).load(function() {
+        $(".variousi").click(function()
+        {
+          //recover last pos
+          var url=window.localStorage["url_news"];
+          $(".variousi[href='"+url+"']").parent().css("background-color", "white");
+          //remember current pos
+          url = $(this).attr("href");
+
+          window.localStorage["url_news"] = url;
+          window.localStorage["clk_"+url] = "1";
+
+
+          $(this).parent().parent().css("background-color", "red");
+          window.open(url, "second");
+          return false;
+        }
+        );
+
+        var url=window.localStorage["url_news"];
+        $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+        var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+        $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());   
+
+        for (var a=0; a<$(".variousi").length; a++) {
+          var o=$(".variousi")[a];
+          var s=getCache("clk_"+o.href);
+          if (s=="1")
+            $(o).parent().parent().css("background-color", "red");
+        }
+    });
+
+    $(document).ready(function()
+    {
+      $.ajaxSetup({ cache: false, async: false });
+
+      getDataJson_udn(urlUdn);
+      getDataJson_yahoo(urlYahoo);
+      
+      var config =
+      {
+        rootMargin: '0px 0px 50px 0px',
+              threshold: 0
+      }
+      ;
+      var observer = new IntersectionObserver(function(entries, self)
+      {
+        entries.forEach(entry =>
+        {
+          if(entry.isIntersecting)
+          {
+            entry.target.src=entry.target.dataset.src;
+            self.unobserve(entry.target);
+          }
+        }
+        );
+      }
+      , config);
+      var imgs = document.querySelectorAll('[data-src]');
+      imgs.forEach(img =>
+      {
+        observer.observe(img);
+      }
+      );
+    }
+    );
+
+    String.prototype.stringBetween = function(s1, s2) {
+      var str = this.toString();
+      var i = str.indexOf(s1);
+      if (i<0) return "";
+      var j = str.indexOf(s2, i+s1.length);
+      return str.substring(i+s1.length, j);
+    }
+  </script>
+</head>
+<body>
+  <a href="https://udn.com/news/index" target="second">
+    Udn新聞
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://tw.news.yahoo.com/" target="second">
+    Yahoo新聞
+  </a>
+  <span id="sp1">
+    <script>
+      var d=new Date();
+      var mm=d.getMonth()+1, dd=d.getDate(), hh=d.getHours(), ss=d.getMinutes();
+      if (mm<10) mm="0"+mm; if (dd<10) dd="0"+dd; if (hh<10) hh="0"+hh; if (ss<10) ss="0"+ss;
+      document.write(mm+"-"+dd+" "+hh+":"+ss);
+    </script>  
+  </span>
+  <br />
+  <div id="dv0">
+    <div id="dv1" class="dv_row"></div>
+    <div id="dv2" class="dv_row"></div>  
+    <div id="dv3" class="dv_row"></div>
+    <script>
+      if ($(document).width()>=600) {
+         document.write('<div id="dv4" class="dv_row"></div>');
+      }
+    </script>
+  </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+
+
+
+
+
+

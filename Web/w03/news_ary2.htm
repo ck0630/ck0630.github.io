@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery-ui-1.11.4.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.floatThead.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://ck0630.github.io/Api/getHttp_local.js"></script>
+  <style type="text/css">
+    .dv_row
+    {
+      width: 25%;
+      float: left;
+    }
+    @media (max-width: 600px)
+    {
+      .dv_row
+      {
+        width: 33%;
+      }
+    }
+    .dv
+    {
+      width: 90%;
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 22px;
+    }
+    .style3
+    {
+      width: 100%;
+      height: auto;
+      min-height: 100px;
+      border: 0;
+      border-radius: 22px;
+      box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;
+    }
+    #sp1 {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      z-index: 999;
+    }
+  </style>
+  <script>
+    var urlNewsApi = "http://newsapi.org/v2/top-headlines?country=tw&apiKey=d695ce3790f442e9b0c980f8d922fe4d";
+    var urlNewsIO  = "https://gnews.io/api/v4/top-headlines?country=tw&token=a7ca8e7a595974206e04ca91c5459b76";
+    var index = 0;
+    var dvary=[[],[],[],[],[]];
+
+    function getCache(url) {
+      var s=window.localStorage[url];
+      if (s==undefined) s="";
+      return s;
+    }
+
+    function addOne(s1, s2, s3, s4, s5) {
+      var n=index % 4 + 1;
+      if ($(document).width()<=600)
+         n=index % 3 + 1;
+      var dvn="#dv"+n;
+      if (s4!="") s4="<br/>"+s4;
+      var s6='<div class="dv"><table><tr><td><a class="variousi" href="'+s1+'" target="second">'+
+        '<img class="style3" src="'+s2+'" data-src="'+s2+'">'+
+        '</a></td></tr><tr><td><p style="word-break:break-all">'+
+        '<b>'+s3+'</b>'+s4+'</p></td></tr></table></div>';
+      if (s5=="append")
+      {  
+         $(dvn).append(s6);
+
+      }
+      if (s5=="insert")
+      {
+         $(dvn).html(s6+$(dvn).html());
+      }   
+      index ++;
+    }
+
+    function getDataJson_NewsApi(fromUrl) {
+      getHttp(fromUrl, function(html) {
+        var data = $.parseJSON(html);
+        for (var a=0; a<data.articles.length; a++) {
+          var s1=data.articles[a].url;
+          var s2=data.articles[a].urlToImage;
+          var s3=data.articles[a].title;
+          var s4=data.articles[a].description;
+          addOne(s1, s2, s3, s4, "append");
+        }
+
+        pos_setting();
+
+      });
+    }
+
+    function getDataJson_NewsIO(fromUrl) {
+      $.getJSON(fromUrl, function(data) {
+        for (var a=0; a<data.articles.length; a++) {
+          var s1=data.articles[a].url;
+          var s2=data.articles[a].image;
+          var s3=data.articles[a].title+"("+data.articles[a].source.name+")";
+          var s4=data.articles[a].description;
+          addOne(s1, s2, s3, s4, "append");
+        }
+
+        pos_setting();
+
+      });
+    }
+
+    var newIndex = 0;
+
+    function pos_setting() {
+        $(".variousi").click(function()
+        {
+          //recover last pos
+          //var url=window.localStorage["url_news"];
+          //$(".variousi[href='"+url+"']").parent().css("background-color", "white");
+          //remember current pos
+          url = $(this).attr("href");
+
+          window.localStorage["url_news"] = url;
+          window.localStorage["clk_"+url] = "1";
+
+
+          $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+          window.open(url, "second");
+          return false;
+        }
+        );
+
+        var url=window.localStorage["url_news"];
+        $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+        try {
+          var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+        } catch { winyy=0 }
+        $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());   
+        for (var a=0; a<$(".variousi").length; a++) {
+          var o=$(".variousi")[a];
+          var s=getCache("clk_"+o.href);
+          if (s=="1")
+            $(o).parent().parent().css("background-color", "red");
+        }
+
+    };
+
+    $(window).load(function() {
+      pos_setting()
+    });
+
+
+    $(document).ready(function()
+    {
+      $.ajaxSetup({ cache: false, async: false });
+      getDataJson_NewsApi(urlNewsApi);
+      getDataJson_NewsIO(urlNewsIO);
+      
+      var config =
+      {
+        rootMargin: '0px 0px 50px 0px',
+              threshold: 0
+      }
+      ;
+      var observer = new IntersectionObserver(function(entries, self)
+      {
+        entries.forEach(entry =>
+        {
+          if(entry.isIntersecting)
+          {
+            entry.target.src=entry.target.dataset.src;
+            self.unobserve(entry.target);
+          }
+        }
+        );
+      }
+      , config);
+      var imgs = document.querySelectorAll('[data-src]');
+      imgs.forEach(img =>
+      {
+        observer.observe(img);
+      }
+      );
+    }
+    );
+
+    String.prototype.stringBetween = function(s1, s2) {
+      var str = this.toString();
+      var i = str.indexOf(s1);
+      if (i<0) return "";
+      var j = str.indexOf(s2, i+s1.length);
+      return str.substring(i+s1.length, j);
+    }
+  </script>
+</head>
+<body>
+  <a href="https://www.ettoday.net" target="second">
+    ETtoday新聞
+  </a>
+  &nbsp;&nbsp;
+  <a href="https://www.ltn.com.tw" target="second">
+    自由時報
+  </a>
+  <span id="sp1">
+    <script>
+      var d=new Date();
+      var mm=d.getMonth()+1, dd=d.getDate(), hh=d.getHours(), ss=d.getMinutes();
+      if (mm<10) mm="0"+mm; if (dd<10) dd="0"+dd; if (hh<10) hh="0"+hh; if (ss<10) ss="0"+ss;
+      document.write(mm+"-"+dd+" "+hh+":"+ss);
+    </script>  
+  </span>
+  <br />
+  <div id="dv0">
+    <div id="dv1" class="dv_row"></div>
+    <div id="dv2" class="dv_row"></div>  
+    <div id="dv3" class="dv_row"></div>
+    <script>
+      if ($(document).width()>=600) {
+         document.write('<div id="dv4" class="dv_row"></div>');
+      }
+    </script>
+  </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
