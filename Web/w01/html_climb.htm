@@ -1,0 +1,418 @@
+﻿<!DOCTYPE html>
+<html><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="https://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://mkoryak.github.io/floatThead/dist/jquery.floatThead.js"></script>
+  <script src="https://ck0630.github.io/Scripts/lazyload.js"></script>
+  <style type="text/css">
+    .td1 {
+      width: 22%;
+    }
+    .tb2 {
+      width: 100%;
+    }
+
+    .dv_row {
+      width: 25%;
+      float: left;
+    }
+
+    .dv {
+      width: 90%;
+      padding: 5px;
+      margin: 5px;
+      border: 1px solid #ccc;
+      border-radius: 22px;
+    }
+    .style3 {
+      width: 100%;
+      height: auto;
+      min-height: 100px; 
+      border: 0;
+      border-radius: 22px;
+      box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      -o-transition: all .2s ease-in-out;
+      -ms-transition: all .2s ease-in-out;            
+    }
+
+    #sp1 {
+      position: absolute;
+      right: 10px;
+      top: 5px;
+      z-index: 999;
+    }
+    .ui-tabs .ui-tabs-panel {
+      padding: 0;
+    }
+    .ui-widget-content {
+      border: 0;
+    }
+    .ui-widget {
+      font-size:1em;
+    }
+    body {
+      margin: 0;
+    }
+   .ui-tabs .ui-tabs-nav {
+     margin: 0;
+   }
+   .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
+     padding: .5em .65em;
+   }
+
+  </style>
+  <script>
+    var newIndex = 0;
+
+    function getCache(url) {
+        var s = window.localStorage[url];
+        if (s == undefined)
+            s = "";
+        return s;
+    }
+
+    $(window).load(function() {
+        var url=window.localStorage["url_now"];
+        $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+        var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+        $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());            
+        for (var a = 0; a < $(".variousi").length; a++) {
+            var o = $(".variousi")[a];
+            var s = getCache("clk_" + o.href);
+            if (s == "1")
+                $(o).parent().parent().css("background-color", "red");
+        }
+    });
+
+    $(document).ready(function() {
+      lazyload();
+      $("#tabs").tabs({
+          active: (window.localStorage["tabs"] || 0),   
+          activate: function (event, ui) {    
+              newIndex = ui.newTab.parent().children().index(ui.newTab);   
+              window.localStorage["tabs"] = newIndex; 
+
+              var url=window.localStorage["url_"+newIndex];
+              $(".variousi[href='"+url+"']").parent().css("background-color", "red");
+              var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+              $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());                         
+          }
+      });
+
+      $(".variousi").click(function(){
+        //recover last pos
+        //var url=window.localStorage["url"];
+        //$(".variousi[href='"+url+"']").parent().css("background-color", "white");
+        //remember current pos
+        url = $(this).attr("href");
+        window.localStorage["url_now"] = url; 
+        window.localStorage["clk_" + url] = "1";
+        $(this).parent().parent().css("background-color", "red");
+        window.open(url, "_self");
+        return false;
+      });
+
+      var config = {
+        rootMargin: '0px 0px 50px 0px',
+        threshold: 0
+      };
+      var observer = new IntersectionObserver(function(entries, self) {
+        entries.forEach(entry => {
+          if(entry.isIntersecting) {
+            entry.target.src=entry.target.dataset.src;
+            self.unobserve(entry.target);
+          }
+        });
+      }, config);
+      var imgs = document.querySelectorAll('[data-src]');
+      imgs.forEach(img => {
+        observer.observe(img);
+      });
+
+
+    });
+  </script>
+</head>
+<body>
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">Jordan</a></li>
+<li><a href="#tabs-2">張義鑫</a></li>
+<li><a href="#tabs-3">熱門</a></li>
+<li><a href="#tabs-4">最新</a></li>
+<li><a href="#tabs-5">捷運</a></li>
+
+      <li><a href="#tabs-11">行程</a></li>
+    </ul>
+        <div id="tabs-1">
+      <div id="dv1" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/lLJ0LcNAFW4?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/lLJ0LcNAFW4/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLASTT3ozMvO65oOYECSlJAWTIZirw" src="https://i.ytimg.com/vi/lLJ0LcNAFW4/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLASTT3ozMvO65oOYECSlJAWTIZirw"></a></td></tr><tr><td><p style="word-break:break-all">(Jo愛演)姊妹間的幾件小事！！ | Jordan微短劇</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/FWN7g4iQ8xc?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/FWN7g4iQ8xc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDDuqYDtT4ZB-HM6JKe9YnHp-IiBg" src="https://i.ytimg.com/vi/FWN7g4iQ8xc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDDuqYDtT4ZB-HM6JKe9YnHp-IiBg"></a></td></tr><tr><td><p style="word-break:break-all">【全家玩馬祖#1】全家搭最經濟省錢的交通工具去馬祖！在船上躺著睡一晚就到了！開箱臺馬之星臥舖船！</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/CU1NvMrpqK4?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/CU1NvMrpqK4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDa_gvSS_jBmwbm_82fFTbxwfnaOg" src="https://i.ytimg.com/vi/CU1NvMrpqK4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDa_gvSS_jBmwbm_82fFTbxwfnaOg"></a></td></tr><tr><td><p style="word-break:break-all">火車站走出來就到啦！吃喝玩樂全包的原住民族特色園區，有超多特色美食及許多休閒娛樂設施，來這裡逛逛就對啦！ | WAH！幾散竹東 | 新竹景點、竹東景點、新竹美食</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/lHNxp_pcaYo?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/lHNxp_pcaYo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC0ab0pRHn_utLZtSTs5n9EhkhP0Q" src="https://i.ytimg.com/vi/lHNxp_pcaYo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC0ab0pRHn_utLZtSTs5n9EhkhP0Q"></a></td></tr><tr><td><p style="word-break:break-all">(CC字幕)【桃園賞桐花秘境 | 和窯文創園區油桐花盛開中】幽靜茶園步道、捏陶、窯烤、咖啡、品茗、下午茶，慢活氛圍是品茶放空的好地方！ | 和窯文創園區、石崎步道、桃園景點、龍潭景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/LjEUgLMCmko?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/LjEUgLMCmko/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABb8nLS3IpsRNrWj3rx53zRYydvA" src="https://i.ytimg.com/vi/LjEUgLMCmko/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLABb8nLS3IpsRNrWj3rx53zRYydvA"></a></td></tr><tr><td><p style="word-break:break-all">【新竹湖口親子一日遊攻略(上)】新竹湖口最著名步道，CP值超高，沿途涼爽有遮蔭，還有軍事遺跡、擎天樹竹林、茶園、歷史遺跡，並可觀景，五月還可賞桐花 | 仁和步道+金獅步道O型路線 |新竹景點、湖口景點</p></td></tr></table></div>
+
+      </div>
+      <div id="dv2" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/4vT3Ci_pg8U?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/4vT3Ci_pg8U/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAaXszToDJD15mHGi8fT655SNOy1A" src="https://i.ytimg.com/vi/4vT3Ci_pg8U/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAaXszToDJD15mHGi8fT655SNOy1A"></a></td></tr><tr><td><p style="word-break:break-all">陽明山超棒秘境美食行程，遊夢幻牛奶瀑布、忘憂黑森林，及戒嚴時期懷舊砲陣地，再去吃超讚的白斬雞，然後夜遊看星星！ | 小隱潭瀑布、竹子湖黑森林、陽明山40砲陣地紀念公園、吉園葡餐廳、擎天崗、陽明山景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/b91AR7u9DEQ?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/b91AR7u9DEQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBX_ib56sSTnDVQg8UXjlYLCjTIMQ" src="https://i.ytimg.com/vi/b91AR7u9DEQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBX_ib56sSTnDVQg8UXjlYLCjTIMQ"></a></td></tr><tr><td><p style="word-break:break-all">【沙灘玩沙戲水天堂 | 外澳沙灘】設施完善，海、天、龜山島入畫，親子沙灘玩水玩沙的好去處！還可玩飛行傘！ | 頭城景點、宜蘭景點、頭城外澳沙灘、外澳服務區</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/NxPYn1Va8D8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/NxPYn1Va8D8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6MM91FBIFkIljRa4otT_mjFrURA" src="https://i.ytimg.com/vi/NxPYn1Va8D8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB6MM91FBIFkIljRa4otT_mjFrURA"></a></td></tr><tr><td><p style="word-break:break-all">宜蘭海邊秘境，去逛逛悠閒的溪口溼地、美景海堤、建在碉堡上的觀景臺，及無人沙灘，再去便宜好吃的快炒店享用晚餐 | 竹安溪口溼地、竹安海堤、大福碉堡海景觀日臺、高僑餐飲、宜蘭景點、頭城景點、壯圍景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/H0VrQ-rnqR4?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/H0VrQ-rnqR4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDubuLcEGcW4aRwfCiZ3vf3iDQFhQ" src="https://i.ytimg.com/vi/H0VrQ-rnqR4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDubuLcEGcW4aRwfCiZ3vf3iDQFhQ"></a></td></tr><tr><td><p style="word-break:break-all">(CC字幕)【北部賞桐花秘境 |小南港山桐花正盛開】15分鐘攻頂，親子步道輕鬆好走，海拔只有90公尺高，但視野開闊、景觀優美，賞桐兼賞風景！ | 小南港山步道O形路線、新北景點、汐止景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/YMOGdft73gs?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/YMOGdft73gs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCp_7Pi85xZTlALIlk8zLkYdgddAA" src="https://i.ytimg.com/vi/YMOGdft73gs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCp_7Pi85xZTlALIlk8zLkYdgddAA"></a></td></tr><tr><td><p style="word-break:break-all">【2022桃園彩色海芋季開箱】帶你去看今年的彩色海芋季！完整資訊，一次報給你知！活動期間4/2～4/17 | 溪海休閒農業區 | 桃園景點</p></td></tr></table></div>
+
+      </div>
+      <div id="dv3" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/j9AO2Eefg3o?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/j9AO2Eefg3o/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlVdpXlL8ZzXQyf4cT99DEesFNgg" src="https://i.ytimg.com/vi/j9AO2Eefg3o/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlVdpXlL8ZzXQyf4cT99DEesFNgg"></a></td></tr><tr><td><p style="word-break:break-all">【陽明山私房夏日避暑步道 | 大崎頭步道】一睹有「巨人的階梯」之稱的水梯田！步道有樹蔭遮蔽，沿途景觀豐富！順遊坪頂古圳環狀步道，一次遊覽三條百年古圳！ | 陽明山景點、臺北景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ZUL-tWpcaLs?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ZUL-tWpcaLs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAq0O6XckbX9xdPLLXMsQWX0B7YGw" src="https://i.ytimg.com/vi/ZUL-tWpcaLs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAq0O6XckbX9xdPLLXMsQWX0B7YGw"></a></td></tr><tr><td><p style="word-break:break-all">【臺北森林秘境 | 小溪頭環狀步道】享受森林浴不用去溪頭，漫步在清幽涼爽的山林中，生態豐富，適合親子同遊！ | 士林景點、臺北景點、內湖景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/BfPpbfl27dg?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/BfPpbfl27dg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDpL3H9Z0qAqy0og4CqENYSOCoQBQ" src="https://i.ytimg.com/vi/BfPpbfl27dg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDpL3H9Z0qAqy0og4CqENYSOCoQBQ"></a></td></tr><tr><td><p style="word-break:break-all">(CC字幕)臺8線中橫合歡山到太魯閣沿途景點開箱，而且還發掘了許多中橫的秘境！！(花蓮遊ep7)|愚公峭壁、碧綠神木、岳王亭吊橋、九曲洞步道、流芳橋觀景臺、長春祠|花蓮景點、中橫景點、中橫秘境</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/MepDEHDF43k?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/MepDEHDF43k/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXm5AudZgqGIZwJj3Ip0Tf7qk89g" src="https://i.ytimg.com/vi/MepDEHDF43k/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXm5AudZgqGIZwJj3Ip0Tf7qk89g"></a></td></tr><tr><td><p style="word-break:break-all">【內行人才知道 | 陽明山菁礐古圳步道】充滿自然景觀與歷史人文特色景點，竹林映著清澈活水，踩著曲折蜿蜒古樸的石板路，感受百年古圳涼爽的林蔭圳道！順遊野人花園景觀咖啡 | 陽明山景點、臺北景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/64frV0GAEL4?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/64frV0GAEL4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB7-6B73-awa6LGdFDkfwgvsOkh1w" src="https://i.ytimg.com/vi/64frV0GAEL4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB7-6B73-awa6LGdFDkfwgvsOkh1w"></a></td></tr><tr><td><p style="word-break:break-all">【基隆雙塔步道】串連基隆燈塔與球子山燈塔，沿途飽覽超多古蹟建築及無敵山海美景！ | 基隆燈塔、白米甕尖、白米甕砲臺、火號山、球子山燈塔、仙洞陣地 | 基隆景點</p></td></tr></table></div>
+
+      </div>
+      <div id="dv4" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/aVCEuQ4cjKw?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/aVCEuQ4cjKw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC0SRUgqA3vDli9N11iSo6cX9o4-w" src="https://i.ytimg.com/vi/aVCEuQ4cjKw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC0SRUgqA3vDli9N11iSo6cX9o4-w"></a></td></tr><tr><td><p style="word-break:break-all">【全家玩馬祖#2 - 東引景點美食#1】東引必吃必玩，燕秀潮音、一線天、天王澳、東引遊客中心、好列豆漿、邂麵囉 | 馬祖景點、馬祖美食、東引景點、東引美食</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/RUy4dGzS0lU?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/RUy4dGzS0lU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCDo6JCQH6FhvM_pRw5gZerviRDsA" src="https://i.ytimg.com/vi/RUy4dGzS0lU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCDo6JCQH6FhvM_pRw5gZerviRDsA"></a></td></tr><tr><td><p style="word-break:break-all">【東北角私房景點美食(上)】參觀全臺最美國小，及其他私房景點，並且享用特色早餐及漁港美食 | 老張早餐吧、合興橋板湖公園、蜜月灣、大溪國小、龜山島漁村文化館、大溪漁港、東北角景點、宜蘭景點、頭城景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/0cy9gty5T0E?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/0cy9gty5T0E/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDG8fVnTptcJnbU9MjVrUgFG3izpQ" src="https://i.ytimg.com/vi/0cy9gty5T0E/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDG8fVnTptcJnbU9MjVrUgFG3izpQ"></a></td></tr><tr><td><p style="word-break:break-all">母親節特輯 - 翻唱加模仿「王傑-媽媽帶我走」(吉他自彈自唱)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/yJzxaAcjFlc?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/yJzxaAcjFlc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCk0lu8iWDqDgUci-C0-rvMavQG6Q" src="https://i.ytimg.com/vi/yJzxaAcjFlc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCk0lu8iWDqDgUci-C0-rvMavQG6Q"></a></td></tr><tr><td><p style="word-break:break-all">【新竹湖口親子一日遊攻略(下)】懷舊好玩有趣的文創園區、新開幕觀夜景第一排景觀咖啡、懷舊十足的紅磚洋樓古街 | 湖口好客文創園區、可可與不可景觀故事館、湖口老街、老湖口天主堂 | 新竹景點、湖口景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/eQMlTzD9pfk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/eQMlTzD9pfk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_zk8TeBPHBpVEqvpzVbTiPW4Zew" src="https://i.ytimg.com/vi/eQMlTzD9pfk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_zk8TeBPHBpVEqvpzVbTiPW4Zew"></a></td></tr><tr><td><p style="word-break:break-all">2022陽明山竹子湖海芋季3/18開始啦！參觀下湖及底湖四家海芋園，讓你先睹為快！ | 海芋賞花步道、下湖海芋步道、海芋環狀步道、海芋大道、湖底環狀步道 | 陽明山景點、臺北景點</p></td></tr></table></div>
+
+      </div>
+      <!--div id="dv5" class="dv_row">
+         <%dv5%>
+      </div-->
+    </div>
+
+    <div id="tabs-2">
+      <div id="dv1" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/vuytbQs4eW0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/vuytbQs4eW0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB2CFc38c7KifM7FGj-_BAx6jc0Ew" src="https://i.ytimg.com/vi/vuytbQs4eW0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB2CFc38c7KifM7FGj-_BAx6jc0Ew"></a></td></tr><tr><td><p style="word-break:break-all">青農張義鑫投入百香果嫁接研究</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Qsx-q6qiUlU?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Qsx-q6qiUlU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAc-X3K7pmsLDUgatcBIok5bbB5ng" src="https://i.ytimg.com/vi/Qsx-q6qiUlU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAc-X3K7pmsLDUgatcBIok5bbB5ng"></a></td></tr><tr><td><p style="word-break:break-all">Q：雨衣要不要買大一號?</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/XcWJMSCr_QU?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/XcWJMSCr_QU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLADMlUqzbDrmWNsFrxd-HtAm_RUTQ" src="https://i.ytimg.com/vi/XcWJMSCr_QU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLADMlUqzbDrmWNsFrxd-HtAm_RUTQ"></a></td></tr><tr><td><p style="word-break:break-all">我的洗雨衣流程：有用DWR防潑水噴劑時</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/U1xV1jLi0F4?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/U1xV1jLi0F4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDwidRvtahcGpcaL0YSuvzbtygPdg" src="https://i.ytimg.com/vi/U1xV1jLi0F4/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDwidRvtahcGpcaL0YSuvzbtygPdg"></a></td></tr><tr><td><p style="word-break:break-all">Outdoor Research Ferrosi Pant適合熱天氣穿的健行褲</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/vDkGXJqWv2A?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/vDkGXJqWv2A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAl6LIbPq6hbPNq8gCn4BpvsSqrow" src="https://i.ytimg.com/vi/vDkGXJqWv2A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAl6LIbPq6hbPNq8gCn4BpvsSqrow"></a></td></tr><tr><td><p style="word-break:break-all">冷的時候爬山的穿著</p></td></tr></table></div>
+
+      </div>
+      <div id="dv2" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/PuU4ikEHb_k?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/PuU4ikEHb_k/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1rxv5nE-7Wn77JIx-5tlifgmdZg" src="https://i.ytimg.com/vi/PuU4ikEHb_k/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1rxv5nE-7Wn77JIx-5tlifgmdZg"></a></td></tr><tr><td><p style="word-break:break-all">我製作影片srt字幕的方式：手機、耳機和Aegisub</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/sTxkQ-NNZGw?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/sTxkQ-NNZGw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZ377nPMDLpULD0Cckwp3KhSvjCw" src="https://i.ytimg.com/vi/sTxkQ-NNZGw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZ377nPMDLpULD0Cckwp3KhSvjCw"></a></td></tr><tr><td><p style="word-break:break-all">爬山時腳踝扭傷、膝蓋痛的處理方法</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/3rvIGNzX0vU?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/3rvIGNzX0vU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBLSzStdxr5B3AsLhekZlFlRUISFA" src="https://i.ytimg.com/vi/3rvIGNzX0vU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBLSzStdxr5B3AsLhekZlFlRUISFA"></a></td></tr><tr><td><p style="word-break:break-all">南湖大山輕量化裝備5.3(end)/5：三天兩夜產生的垃圾有幾克？</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/h6Numkv3Gvg?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/h6Numkv3Gvg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBgvVU8bacfhA8Sxy73snm8ixqYxg" src="https://i.ytimg.com/vi/h6Numkv3Gvg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBgvVU8bacfhA8Sxy73snm8ixqYxg"></a></td></tr><tr><td><p style="word-break:break-all">輕量化：一項裝備，一個考慮</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/XupJqUeD0NQ?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/XupJqUeD0NQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBYOXxpp6dSgTpv1VoQCX9ciXpq9A" src="https://i.ytimg.com/vi/XupJqUeD0NQ/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBYOXxpp6dSgTpv1VoQCX9ciXpq9A"></a></td></tr><tr><td><p style="word-break:break-all">為一條稜線：裝備</p></td></tr></table></div>
+
+      </div>
+      <div id="dv3" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/cEz_iZFwvYE?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/cEz_iZFwvYE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAhUTbHMGF5mixosP1qDWBP6sabGw" src="https://i.ytimg.com/vi/cEz_iZFwvYE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAhUTbHMGF5mixosP1qDWBP6sabGw"></a></td></tr><tr><td><p style="word-break:break-all">防水不防水；黃金大底；環保鞋底。關於登山鞋的一些（下）</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/-Gxr4YUnk-E?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/-Gxr4YUnk-E/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCssTvEkLFegPraI1AtgvSbAOFltQ" src="https://i.ytimg.com/vi/-Gxr4YUnk-E/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCssTvEkLFegPraI1AtgvSbAOFltQ"></a></td></tr><tr><td><p style="word-break:break-all">50g的輕量腳架：Pedco UltraPod</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/bHwSUL60F1k?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/bHwSUL60F1k/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXLbJ-opGyv-GyySVTdtemOAJh5w" src="https://i.ytimg.com/vi/bHwSUL60F1k/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXLbJ-opGyv-GyySVTdtemOAJh5w"></a></td></tr><tr><td><p style="word-break:break-all">Therm-a-Rest 輕量耐濕睡袋 Hyperion 20 UL Sleeping Bag</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ZHxCIwf6He0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ZHxCIwf6He0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA0p0hhvYeXnL8Xt4nW6idM5Mkd9A" src="https://i.ytimg.com/vi/ZHxCIwf6He0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA0p0hhvYeXnL8Xt4nW6idM5Mkd9A"></a></td></tr><tr><td><p style="word-break:break-all">以溫度標示和重量來選擇適合自己的睡袋：Western Mountaineering SummerLite</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/--fHI0gu7q8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/--fHI0gu7q8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBonL0YWPkeOQ2WU6oeUIXxhObncA" src="https://i.ytimg.com/vi/--fHI0gu7q8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBonL0YWPkeOQ2WU6oeUIXxhObncA"></a></td></tr><tr><td><p style="word-break:break-all">爬山時一些輕且實用的裝備（上）：水泡預防處理、傷口清創、高山癥癥狀表</p></td></tr></table></div>
+
+      </div>
+      <div id="dv4" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/MDmxd0FN8vE?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/MDmxd0FN8vE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD5qjDI2vELVJKQaT_BEuesZsuCig" src="https://i.ytimg.com/vi/MDmxd0FN8vE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD5qjDI2vELVJKQaT_BEuesZsuCig"></a></td></tr><tr><td><p style="word-break:break-all">我的腳掌稍微寬了一點。爬山鞋子低筒或高筒。鞋子輕量化的劃算之處。關於登山鞋的一些（上）</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/gbYcadtzxWs?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/gbYcadtzxWs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDAX6D4FKrjmQokEznCCvUYlnDeGg" src="https://i.ytimg.com/vi/gbYcadtzxWs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDAX6D4FKrjmQokEznCCvUYlnDeGg"></a></td></tr><tr><td><p style="word-break:break-all">帳篷的選擇(下)：美國Zpacks輕量化網站下單step by step</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/OrCY6Nbcyug?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/OrCY6Nbcyug/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAEyva5Q2sX1h6scm9DVZF_b78Lwg" src="https://i.ytimg.com/vi/OrCY6Nbcyug/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAEyva5Q2sX1h6scm9DVZF_b78Lwg"></a></td></tr><tr><td><p style="word-break:break-all">南湖大山輕量化裝備5.2/5：晚餐與早餐</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/U7cZppw4SQM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/U7cZppw4SQM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXSNgOEeV4S3RTLbbuQXoMt-QDAQ" src="https://i.ytimg.com/vi/U7cZppw4SQM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCXSNgOEeV4S3RTLbbuQXoMt-QDAQ"></a></td></tr><tr><td><p style="word-break:break-all">冷的時候爬山：一天行程備用裝備和吃的準備(上)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/s79r5QC412o?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/s79r5QC412o/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAwV7ZOKAJxwZ4V4w_XzV7Bg9vgvQ" src="https://i.ytimg.com/vi/s79r5QC412o/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAwV7ZOKAJxwZ4V4w_XzV7Bg9vgvQ"></a></td></tr><tr><td><p style="word-break:break-all">那些我漸漸不用的裝備：衣物篇</p></td></tr></table></div>
+
+      </div>
+      <!--div id="dv5" class="dv_row">
+         <%dv5%>
+      </div-->
+    </div>
+
+    <div id="tabs-3">
+      <div id="dv1" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/iGSJrsGeiK8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/iGSJrsGeiK8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB8QeLWnGExSq76vRQH2bbfoz2KLg" src="https://i.ytimg.com/vi/iGSJrsGeiK8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB8QeLWnGExSq76vRQH2bbfoz2KLg"></a></td></tr><tr><td><p style="word-break:break-all">【臺灣旅遊攻略】北部三條絕美網美步道，山海美景超療癒，IG美照拍不停！｜KKday</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Y0x1atd0S7A?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Y0x1atd0S7A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAjWFmVBtWTohpDrL1X9Z423zNtqQ" src="https://i.ytimg.com/vi/Y0x1atd0S7A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAjWFmVBtWTohpDrL1X9Z423zNtqQ"></a></td></tr><tr><td><p style="word-break:break-all">Spice臺北🌶️ | 不用開車就能到的 270 度河口絕景，初學者也能爬的山林秘境 ｜臺灣 自由行 攻略</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/DyfXbzQikAM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/DyfXbzQikAM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBffCcCmHKes_7zLn28vqVFt4ceRg" src="https://i.ytimg.com/vi/DyfXbzQikAM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBffCcCmHKes_7zLn28vqVFt4ceRg"></a></td></tr><tr><td><p style="word-break:break-all">基隆最美登山步道 超簡單直達最美風景 | 忘憂谷</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/DX3QTKBlu8w?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/DX3QTKBlu8w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB0vmw_V2UZWrDHn0TdaohrmcMLCA" src="https://i.ytimg.com/vi/DX3QTKBlu8w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB0vmw_V2UZWrDHn0TdaohrmcMLCA"></a></td></tr><tr><td><p style="word-break:break-all">北臺灣版的阿朗壹古道～鼻頭角祕境，驚艷, 驚艷, 再驚艷!!! ( Bitoujiao Secret Scenery）</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/pZQ3yrwsEzM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/pZQ3yrwsEzM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLByRNbOhdzIvaapgLnUfvtXLJ_s8A" src="https://i.ytimg.com/vi/pZQ3yrwsEzM/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLByRNbOhdzIvaapgLnUfvtXLJ_s8A"></a></td></tr><tr><td><p style="word-break:break-all">臺北市區竟然有這種景點？運動完帶你去：絕對會再回訪的五星巷弄美食！臺北旅遊</p></td></tr></table></div>
+
+      </div>
+      <div id="dv2" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/vxCl16UPZYc?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/vxCl16UPZYc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9iM3KIut5_2BcO6gv8dylL7eLHQ" src="https://i.ytimg.com/vi/vxCl16UPZYc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9iM3KIut5_2BcO6gv8dylL7eLHQ"></a></td></tr><tr><td><p style="word-break:break-all">臺北假日推薦｜健行｜淡蘭古道/最佳五星級親子步道-坪溪古道/消暑，溯溪，森林，小孩挑戰，賞景通通都有</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/qFTo0GJ8id8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/qFTo0GJ8id8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDoYtmzwh6KiBIvMmEENB-Ji5hryA" src="https://i.ytimg.com/vi/qFTo0GJ8id8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDoYtmzwh6KiBIvMmEENB-Ji5hryA"></a></td></tr><tr><td><p style="word-break:break-all">臺北近郊怡人的森林浴步道~臺北小溪頭環狀步道</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/InsoKIVg5oY?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/InsoKIVg5oY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDkEmvD329YvK8HraBo4YHokM_WYw" src="https://i.ytimg.com/vi/InsoKIVg5oY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDkEmvD329YvK8HraBo4YHokM_WYw"></a></td></tr><tr><td><p style="word-break:break-all">Spice 臺北🌶️ | 臺北版亞馬遜森林！一天就能穿越叢林、夏日消暑野溪秘境</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/tI1nOT0Uv6Q?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/tI1nOT0Uv6Q/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_CCCJ66FiVNCoPDklarGEuZkMgw" src="https://i.ytimg.com/vi/tI1nOT0Uv6Q/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA_CCCJ66FiVNCoPDklarGEuZkMgw"></a></td></tr><tr><td><p style="word-break:break-all">《小旅行》新北網美步道 | 彩虹石壁秘境 | 俯瞰北二高和臺北101 | 一個步道兩個打卡景點 | 三峽鳶山步道 | 來拍IG照EP16</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/mWg71fPIonk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/mWg71fPIonk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC2cmi6L9IdQaVr-bcoosXliGNsRg" src="https://i.ytimg.com/vi/mWg71fPIonk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC2cmi6L9IdQaVr-bcoosXliGNsRg"></a></td></tr><tr><td><p style="word-break:break-all">北部三大巖場！手腳並用終於完攻！筆架山,五寮尖,皇帝殿 一覽臺北天際線｜新北景點</p></td></tr></table></div>
+
+      </div>
+      <div id="dv3" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/84iQizyrCNE?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/84iQizyrCNE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhesVC3t55HbmoZkoICOMK8Qpsug" src="https://i.ytimg.com/vi/84iQizyrCNE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBhesVC3t55HbmoZkoICOMK8Qpsug"></a></td></tr><tr><td><p style="word-break:break-all">雙十連假必走步道之一：桃園石門山 | 臺灣小百岳#024</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/LojfdV1Zpho?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/LojfdV1Zpho/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA5rQBuVcdHv89SHnWeH4SkpT2a0w" src="https://i.ytimg.com/vi/LojfdV1Zpho/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA5rQBuVcdHv89SHnWeH4SkpT2a0w"></a></td></tr><tr><td><p style="word-break:break-all">Spice 新北🌶️ | 號稱北部版的墾丁？！懂度假的都市人都來這！</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/DdJWf2o7Kqg?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/DdJWf2o7Kqg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGBfyxOCPTdA4MiK9Xairz-v5Bnw" src="https://i.ytimg.com/vi/DdJWf2o7Kqg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGBfyxOCPTdA4MiK9Xairz-v5Bnw"></a></td></tr><tr><td><p style="word-break:break-all">大臺北10條水岸步道 ☆特別企畫</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/5j2nXDMyTLM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/5j2nXDMyTLM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCVrpVwpmQiCIM14Cjxc4fC5Cvksw" src="https://i.ytimg.com/vi/5j2nXDMyTLM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCVrpVwpmQiCIM14Cjxc4fC5Cvksw"></a></td></tr><tr><td><p style="word-break:break-all">臺北也有百岳級美景郊山 !? 臺北抹茶小觀音山</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/-3SMw0z80Bc?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/-3SMw0z80Bc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAlr18A475FtrUDrGrSiWyUuDytHw" src="https://i.ytimg.com/vi/-3SMw0z80Bc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAlr18A475FtrUDrGrSiWyUuDytHw"></a></td></tr><tr><td><p style="word-break:break-all">2018年新北市登山節推薦7條步道  ☆特別企畫</p></td></tr></table></div>
+
+      </div>
+      <div id="dv4" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/9dwaa0ObfZk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/9dwaa0ObfZk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCL4eRFCFMxpr3q9j2aoidViMjXew" src="https://i.ytimg.com/vi/9dwaa0ObfZk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCL4eRFCFMxpr3q9j2aoidViMjXew"></a></td></tr><tr><td><p style="word-break:break-all">【2021.10月新開幕-桃園大古山登山步道公園開箱】觀山海景色、賞夜景、看飛機，成打卡私房景點，順遊151高地景觀餐廳、老鷹觀景臺、大古山風景區 | 桃園景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/rps9NH80VLY?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/rps9NH80VLY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAa-8pn_riJVhEEUzbIR2TViNtg_A" src="https://i.ytimg.com/vi/rps9NH80VLY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAa-8pn_riJVhEEUzbIR2TViNtg_A"></a></td></tr><tr><td><p style="word-break:break-all">Spice 輕旅行🌶️ | 評比5條大臺北地區懶人郊山步道！時間地形交通一次帶你看，吸睛美照輕鬆擁有、長輩小孩都適合！</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/GzywIwDfPgs?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/GzywIwDfPgs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBT6Y8wC_EPtPwpvXqxOjVk5EN8NA" src="https://i.ytimg.com/vi/GzywIwDfPgs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBT6Y8wC_EPtPwpvXqxOjVk5EN8NA"></a></td></tr><tr><td><p style="word-break:break-all">大臺北10條搭捷運登山步道 ☆特別企畫</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/2okCvslpuSU?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/2okCvslpuSU/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAiCWRjENLgkuR_pz30KkCXoV4tZg" src="https://i.ytimg.com/vi/2okCvslpuSU/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAiCWRjENLgkuR_pz30KkCXoV4tZg"></a></td></tr><tr><td><p style="word-break:break-all">【郊山步道 | 桃源谷】北臺灣最美草原 絕美秘境山海一線間</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/N2f45jn97z0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/N2f45jn97z0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAX_WZkxjxQPab6b3UnRt5pBWyMAQ" src="https://i.ytimg.com/vi/N2f45jn97z0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAX_WZkxjxQPab6b3UnRt5pBWyMAQ"></a></td></tr><tr><td><p style="word-break:break-all">北臺灣三大巖場之一，充滿攀爬野趣的筆架山（Bijia Mountain）</p></td></tr></table></div>
+
+      </div>
+      <!--div id="dv5" class="dv_row">
+         <%dv5%>
+      </div-->
+    </div>
+
+    <div id="tabs-4">
+      <div id="dv1" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Ofs70qrLlxY?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Ofs70qrLlxY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZJx7ORXzs2GcJaBJ1AYL7Bg60pg" src="https://i.ytimg.com/vi/Ofs70qrLlxY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDZJx7ORXzs2GcJaBJ1AYL7Bg60pg"></a></td></tr><tr><td><p style="word-break:break-all">《溫妮泱泱VLOG》第十二集 革命姊妹的北臺灣輕旅行 - 淡蘭古道_北路篇</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/V2AU2ZvCMtI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/V2AU2ZvCMtI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDwtxX1yYvHleswuI77y43izIVIaQ" src="https://i.ytimg.com/vi/V2AU2ZvCMtI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDwtxX1yYvHleswuI77y43izIVIaQ"></a></td></tr><tr><td><p style="word-break:break-all">輕鬆怡人的森林浴健行路線~雙溪溝古道、臺北小縱走 (Shaungxigou Historical Trail)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/w9zQweo01gk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/w9zQweo01gk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC21WTyD1_DSuhcMaBfACLJSySY7g" src="https://i.ytimg.com/vi/w9zQweo01gk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC21WTyD1_DSuhcMaBfACLJSySY7g"></a></td></tr><tr><td><p style="word-break:break-all">【帶團趣臺北、基隆】北臺灣畢業旅行四天三夜這樣玩！｜象山初體驗｜征服七星山｜無人的九份｜一日臺大生｜ft.國立臺南大學附屬高級中學</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ZH1eTvOU93g?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ZH1eTvOU93g/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAm317_PmILXPPPfw3ISmWugkelmw" src="https://i.ytimg.com/vi/ZH1eTvOU93g/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAm317_PmILXPPPfw3ISmWugkelmw"></a></td></tr><tr><td><p style="word-break:break-all">享受百萬夜景不用上101！全家熱血晚上爬象山環狀步道，處處有驚豔！生態豐富，適合親子同遊！ | 臺北景點、信義區景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/N0JIJ3K9c34?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/N0JIJ3K9c34/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgKG_u-JlsDDU1VtWD7QRJ8H-14A" src="https://i.ytimg.com/vi/N0JIJ3K9c34/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgKG_u-JlsDDU1VtWD7QRJ8H-14A"></a></td></tr><tr><td><p style="word-break:break-all">帶你搭臺灣好行北投竹子湖線景點一日遊！四季皆宜的旅遊路線，冬天有溫泉、夏天有瀑布讓你輕鬆遊</p></td></tr></table></div>
+
+      </div>
+      <div id="dv2" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ORnEZ2Nb8ng?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ORnEZ2Nb8ng/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCuTKBSMXbdtDlYb5n8nc__9U4-7Q" src="https://i.ytimg.com/vi/ORnEZ2Nb8ng/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCuTKBSMXbdtDlYb5n8nc__9U4-7Q"></a></td></tr><tr><td><p style="word-break:break-all">帶你搭臺灣好行小烏來線享受冰涼的合法戲水區、森林步道，天空步道近距離感受溪谷瀑布</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/w6vnl_-5W_A?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/w6vnl_-5W_A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA4HaP5IZKzhs8Uyz18leRW3-PAYg" src="https://i.ytimg.com/vi/w6vnl_-5W_A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA4HaP5IZKzhs8Uyz18leRW3-PAYg"></a></td></tr><tr><td><p style="word-break:break-all">走路不用2分鐘～優霞雲瀑布！驚喜不是瀑布，而是上游的庫志步道溪谷</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ZN9bGtNYq4w?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ZN9bGtNYq4w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBKCFWLB-1Rhjx3rcZJLR3QlFoDAA" src="https://i.ytimg.com/vi/ZN9bGtNYq4w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBKCFWLB-1Rhjx3rcZJLR3QlFoDAA"></a></td></tr><tr><td><p style="word-break:break-all">陽明山竹子湖青楓步道，一年四季都美的步道，美食＋美景，完美步道，胡一刀公開4條暢遊青楓步道最佳路線，GPX電子檔開放下載。</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/_MJScORmIio?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/_MJScORmIio/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCv1d3Y4UV-Z5nO_8p-xkufO94o3w" src="https://i.ytimg.com/vi/_MJScORmIio/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCv1d3Y4UV-Z5nO_8p-xkufO94o3w"></a></td></tr><tr><td><p style="word-break:break-all">草山滾水頭~水圳、老樹、古道、古蹟、瀑布，超豐富的陽明山環狀森林浴路線</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/bFEGW6L9kkc?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/bFEGW6L9kkc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAFk96f_6hWs1aXsmjYsYCIUltlTQ" src="https://i.ytimg.com/vi/bFEGW6L9kkc/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAFk96f_6hWs1aXsmjYsYCIUltlTQ"></a></td></tr><tr><td><p style="word-break:break-all">一樓樓出去玩~北臺灣篇</p></td></tr></table></div>
+
+      </div>
+      <div id="dv3" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/YmsjS0XymHw?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/YmsjS0XymHw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfmqbR7bfL19UxUmx1fpWPk0JlGQ" src="https://i.ytimg.com/vi/YmsjS0XymHw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAfmqbR7bfL19UxUmx1fpWPk0JlGQ"></a></td></tr><tr><td><p style="word-break:break-all">臺灣竟然擁有「全球最美日出🌤」！？探索北海岸的世界級秘境😍!! 1天走完和平島前世今生 ｜基隆旅遊 8K</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/QYX5Fz8w0so?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/QYX5Fz8w0so/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1wmq0wkXsZAj54rQnCLH3ZnwQag" src="https://i.ytimg.com/vi/QYX5Fz8w0so/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB1wmq0wkXsZAj54rQnCLH3ZnwQag"></a></td></tr><tr><td><p style="word-break:break-all">小烏來瀑布底步道～瀑布永遠在那裡,　只是長虹橋暫時不通。 (Xiaowulai Waterfall)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/cUe9hiJpyKM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/cUe9hiJpyKM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB4mQslLzA7KQNkJYKMwwVQAFJqug" src="https://i.ytimg.com/vi/cUe9hiJpyKM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB4mQslLzA7KQNkJYKMwwVQAFJqug"></a></td></tr><tr><td><p style="word-break:break-all">李崠山步道 - 李棟山莊 - 李崠山古堡 - 李棟山古堡 - 天然谷 鱘龍魚 - 內灣老街 - 客家美食 - 豆花 - 新竹縣 尖石鄉 - 健行 - 臺灣小百岳 - 三角點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/gk76McIRPPI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/gk76McIRPPI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBkAiEGmAWP7QVymleNiz8CNW9vUw" src="https://i.ytimg.com/vi/gk76McIRPPI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBkAiEGmAWP7QVymleNiz8CNW9vUw"></a></td></tr><tr><td><p style="word-break:break-all">全家再次熱血傍晚爬小百岳基隆山，賞無敵海景、山景、山城美景！一次賞日景兼賞夜景！ | 新北景點、瑞芳景點、基隆山登山步道</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ClQQsPC_zi0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ClQQsPC_zi0/hq720_2.jpg?sqp=-oaymwEdCJUDENAFSFXyq4qpAw8IARUAAIhCcAHAAQbQAQE=&rs=AOn4CLBtg76hO9J08Rk8fF4ZhmNhigDsiw" src="https://i.ytimg.com/vi/ClQQsPC_zi0/hq720_2.jpg?sqp=-oaymwEdCJUDENAFSFXyq4qpAw8IARUAAIhCcAHAAQbQAQE=&rs=AOn4CLBtg76hO9J08Rk8fF4ZhmNhigDsiw"></a></td></tr><tr><td><p style="word-break:break-all">北臺灣最美步道</p></td></tr></table></div>
+
+      </div>
+      <div id="dv4" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/OibFSftNDMM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/OibFSftNDMM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAGLjObDOBVkb7fj9PF6xc-yzMWQA" src="https://i.ytimg.com/vi/OibFSftNDMM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAGLjObDOBVkb7fj9PF6xc-yzMWQA"></a></td></tr><tr><td><p style="word-break:break-all">太魯閣國家公園~太魯閣臺地步道 (Taroko Terrace Trail)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/6rX4JgTauPo?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/6rX4JgTauPo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAiELro0t2pjvYVa3EFwdm5_XVyUA" src="https://i.ytimg.com/vi/6rX4JgTauPo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAiELro0t2pjvYVa3EFwdm5_XVyUA"></a></td></tr><tr><td><p style="word-break:break-all">雲深瀑布#秘境#北部#北臺灣#一日遊#hiking#trail#waterfall#northeast #taiwan#travel#relaxion</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/bwffd2TAEsA?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/bwffd2TAEsA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1kpfImLvc-2DCi6QVPVasKnR8yw" src="https://i.ytimg.com/vi/bwffd2TAEsA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1kpfImLvc-2DCi6QVPVasKnR8yw"></a></td></tr><tr><td><p style="word-break:break-all">北臺灣最美步道 【鏡頭下的寶貝】空拍</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/OPSGgk2jLgA?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/OPSGgk2jLgA/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBe4RwIEy67xUrnkjcJJWmiIJDeoQ" src="https://i.ytimg.com/vi/OPSGgk2jLgA/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBe4RwIEy67xUrnkjcJJWmiIJDeoQ"></a></td></tr><tr><td><p style="word-break:break-all">臺北景點｜搭捷運去爬山｜唭哩岸捷運站｜奇巖山｜唭哩岸山｜軍艦巖｜龍鳳谷公園｜陽峰古道｜大屯瀑布｜青春嶺｜湖田國小步道｜水車寮步道｜小油坑遊客中心｜爬升1300M上七星山｜苗圃登山步道</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/I1hnzxGjgf0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/I1hnzxGjgf0/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBlNfS8DZhFF9yB29OEfvIZfmDX5A" src="https://i.ytimg.com/vi/I1hnzxGjgf0/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBlNfS8DZhFF9yB29OEfvIZfmDX5A"></a></td></tr><tr><td><p style="word-break:break-all">北臺灣的浮潛天堂，龍洞灣海洋公園，天然海水游泳池，親子玩水好去處!!!</p></td></tr></table></div>
+
+      </div>
+      <!--div id="dv5" class="dv_row">
+         <%dv5%>
+      </div-->
+    </div>
+
+    <div id="tabs-5">
+      <div id="dv1" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Cmvaf-4QwZ8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Cmvaf-4QwZ8/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBF14SrKC-ANH0y7BueCm9QCTuwuw" src="https://i.ytimg.com/vi/Cmvaf-4QwZ8/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBF14SrKC-ANH0y7BueCm9QCTuwuw"></a></td></tr><tr><td><p style="word-break:break-all">噁！男搭捷運吐痰抹「扶手桿」...乘客恐慌奔逃 拿滅火器自保｜TVBS新聞</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/UDA6K8E7Cbk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/UDA6K8E7Cbk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdN-uk0ZzFQcMpEJz9cJA9lU6DUA" src="https://i.ytimg.com/vi/UDA6K8E7Cbk/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdN-uk0ZzFQcMpEJz9cJA9lU6DUA"></a></td></tr><tr><td><p style="word-break:break-all">【孫女訪問中】深入捷運工地一天，工地便當居然是泰式Buffet！看完這集以後搭捷運都不滑手機了</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/a63ZuRW7hFI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/a63ZuRW7hFI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCtd4awTIKDemciKl2z9TChoHKMRw" src="https://i.ytimg.com/vi/a63ZuRW7hFI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCtd4awTIKDemciKl2z9TChoHKMRw"></a></td></tr><tr><td><p style="word-break:break-all">警察真難當! 女子捷運站吼叫 警方護送返家遭刺傷 傷警後女子仍情緒失控竟自戕亡│記者 丁韋傑 鄭翔仁 徐湘蕓│【LIVE大現場】20220901│三立新聞臺</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/cxqOLHUjrCI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/cxqOLHUjrCI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCRMSbxgTwKHM6cE_zxaEIVCGncvA" src="https://i.ytimg.com/vi/cxqOLHUjrCI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCRMSbxgTwKHM6cE_zxaEIVCGncvA"></a></td></tr><tr><td><p style="word-break:break-all">噁！男搭捷運吐痰抹「扶手桿」...乘客恐慌奔逃 拿滅火器自保｜TVBS新聞</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/E0XcAt0uqT4?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/E0XcAt0uqT4/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCFXGz0TwiEmxQAVaERkGY-L8Y11g" src="https://i.ytimg.com/vi/E0XcAt0uqT4/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCFXGz0TwiEmxQAVaERkGY-L8Y11g"></a></td></tr><tr><td><p style="word-break:break-all">CTWANT 社會新聞 / 女子捷運站外失控吼叫　警協助返家後自殘亡</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/1DGMn7VO-UE?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/1DGMn7VO-UE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBJ2AN-MnNw4_yD1JUFQNFMrWnYog" src="https://i.ytimg.com/vi/1DGMn7VO-UE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBJ2AN-MnNw4_yD1JUFQNFMrWnYog"></a></td></tr><tr><td><p style="word-break:break-all">#三立最新 噁! 男搭臺北捷運隨地吐痰塗抹扶桿! 乘客制止爆發衝突警獲報逮捕吐痰男│【LIVE大現場】20220901│三立新聞臺</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/eUYI3r2O3bs?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/eUYI3r2O3bs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDA9_CHaPHrzsHE7lSVomXv7yfXRg" src="https://i.ytimg.com/vi/eUYI3r2O3bs/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDA9_CHaPHrzsHE7lSVomXv7yfXRg"></a></td></tr><tr><td><p style="word-break:break-all">超狂～臺中捷運線從頭吃到尾！出站就是美食的天堂！？｜大食い / 먹방  / Mukbang｜路路LULU</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/OR5bgBGsAfY?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/OR5bgBGsAfY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCxmzR-bK4TKrMAVw3uP1OTXZMoJA" src="https://i.ytimg.com/vi/OR5bgBGsAfY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCxmzR-bK4TKrMAVw3uP1OTXZMoJA"></a></td></tr><tr><td><p style="word-break:break-all">捷運站鬧事\警護送回家\! 女發狂\持刀砍警\再自戕不治│中視新聞 20220901</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/XQZQd1pBKCk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/XQZQd1pBKCk/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD6QeiZ9s-PJ_lAaewYb5ChHB1hew" src="https://i.ytimg.com/vi/XQZQd1pBKCk/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD6QeiZ9s-PJ_lAaewYb5ChHB1hew"></a></td></tr><tr><td><p style="word-break:break-all">2022捷運盃街舞大賽暨東區街舞嘉年華 #Day2</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/uRB6oEJhe_Q?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/uRB6oEJhe_Q/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCUtZcFG41BX1xpJLIu_GuEAD0s8Q" src="https://i.ytimg.com/vi/uRB6oEJhe_Q/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCUtZcFG41BX1xpJLIu_GuEAD0s8Q"></a></td></tr><tr><td><p style="word-break:break-all">高雄第五條捷運紫線來啦！！終於等到高捷成路網的一天😭😭</p></td></tr></table></div>
+
+      </div>
+      <div id="dv2" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ny2Nq60-W1A?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ny2Nq60-W1A/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdibDzXEVlZ9QwueoXPJXNDb5tdw" src="https://i.ytimg.com/vi/ny2Nq60-W1A/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdibDzXEVlZ9QwueoXPJXNDb5tdw"></a></td></tr><tr><td><p style="word-break:break-all">新竹縣登山步道、帶爸媽爬山！⛰️ 鵝公髻山、森遊竹縣👣</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/tW8kjEeNQNA?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/tW8kjEeNQNA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_ibBAV9z9prq12yGdxjbJXZMxnQ" src="https://i.ytimg.com/vi/tW8kjEeNQNA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD_ibBAV9z9prq12yGdxjbJXZMxnQ"></a></td></tr><tr><td><p style="word-break:break-all">容軒步道漫遊 -八斗子之旅EP02</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ZN9bGtNYq4w?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ZN9bGtNYq4w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBKCFWLB-1Rhjx3rcZJLR3QlFoDAA" src="https://i.ytimg.com/vi/ZN9bGtNYq4w/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBKCFWLB-1Rhjx3rcZJLR3QlFoDAA"></a></td></tr><tr><td><p style="word-break:break-all">陽明山竹子湖青楓步道，一年四季都美的步道，美食＋美景，完美步道，胡一刀公開4條暢遊青楓步道最佳路線，GPX電子檔開放下載。</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/QcZmnmCeKcg?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/QcZmnmCeKcg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBh8hU5FQhuUcKTnplKXWB758GivA" src="https://i.ytimg.com/vi/QcZmnmCeKcg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBh8hU5FQhuUcKTnplKXWB758GivA"></a></td></tr><tr><td><p style="word-break:break-all">東眼山 + 東滿步道 A進B出~令人意外的累與不輕鬆~桃園市/新北市</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/w6vnl_-5W_A?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/w6vnl_-5W_A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA4HaP5IZKzhs8Uyz18leRW3-PAYg" src="https://i.ytimg.com/vi/w6vnl_-5W_A/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA4HaP5IZKzhs8Uyz18leRW3-PAYg"></a></td></tr><tr><td><p style="word-break:break-all">走路不用2分鐘～優霞雲瀑布！驚喜不是瀑布，而是上游的庫志步道溪谷</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/WLqjEN3ZZog?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/WLqjEN3ZZog/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBm4mLdnbJcX97rQUtn7kVFFehtPQ" src="https://i.ytimg.com/vi/WLqjEN3ZZog/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBm4mLdnbJcX97rQUtn7kVFFehtPQ"></a></td></tr><tr><td><p style="word-break:break-all">紅河谷步道+古圳步道+瀧溪步道-08/12/2022</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/SndktRbC7Eo?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/SndktRbC7Eo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3RzniUU3dt72_GgGGhu4ODtENIQ" src="https://i.ytimg.com/vi/SndktRbC7Eo/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC3RzniUU3dt72_GgGGhu4ODtENIQ"></a></td></tr><tr><td><p style="word-break:break-all">（南投鹿谷）鳳凰谷步道、路程短全程漫步樹林與竹林中涼爽宜人，適合全家大小一起來健行。</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/_TrYLpdzraU?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/_TrYLpdzraU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCZD5adyru0vEvWk55uJHam1_rnpA" src="https://i.ytimg.com/vi/_TrYLpdzraU/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCZD5adyru0vEvWk55uJHam1_rnpA"></a></td></tr><tr><td><p style="word-break:break-all">東霸工字石 海蝕洞步道 加遊橋咀連島沙洲</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Q5kHGUddDno?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Q5kHGUddDno/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZ_IhJcvS9Evs2B9QdSxsk99zPwg" src="https://i.ytimg.com/vi/Q5kHGUddDno/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAZ_IhJcvS9Evs2B9QdSxsk99zPwg"></a></td></tr><tr><td><p style="word-break:break-all">中埔山榕樹步道  2022  08</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Ug4Vg_YBO68?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Ug4Vg_YBO68/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDN6iK-RxvFAtF1PnU1xXiE5cJXTw" src="https://i.ytimg.com/vi/Ug4Vg_YBO68/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDN6iK-RxvFAtF1PnU1xXiE5cJXTw"></a></td></tr><tr><td><p style="word-break:break-all">花蓮景點：2022太魯閣｜白楊步道｜白楊瀑布｜白楊吊橋｜水簾洞｜ Hualien Attractions｜Poplar Trail｜Taroko｜Taiwan travel</p></td></tr></table></div>
+
+      </div>
+      <div id="dv3" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/RPFiua77BsE?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/RPFiua77BsE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD98-eUfOUuKxZO6B4GZBg9iIm5mQ" src="https://i.ytimg.com/vi/RPFiua77BsE/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD98-eUfOUuKxZO6B4GZBg9iIm5mQ"></a></td></tr><tr><td><p style="word-break:break-all">女捷運站內喧鬧竟攻擊員警害傷 女子喪命@東森新聞 CH51</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ddyGcVIr_uI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ddyGcVIr_uI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDrENgk8AOt4C8ItG-AGPLW3Se75A" src="https://i.ytimg.com/vi/ddyGcVIr_uI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDrENgk8AOt4C8ItG-AGPLW3Se75A"></a></td></tr><tr><td><p style="word-break:break-all">捷運內吐痰遭勸爆衝突 乘客驚魂衝出車廂@東森新聞 CH51</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/qAAY5sOlITw?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/qAAY5sOlITw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkxpNcF5q8hkPtrGOdVTYUyZsOw" src="https://i.ytimg.com/vi/qAAY5sOlITw/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLkxpNcF5q8hkPtrGOdVTYUyZsOw"></a></td></tr><tr><td><p style="word-break:break-all">捷運士林站突騷動  原是乘客亂吐痰引發糾紛【最新快訊】</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/nW8JbmKn0qY?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/nW8JbmKn0qY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAzuzM4I5TBkKDibwwqH6M0aw62yA" src="https://i.ytimg.com/vi/nW8JbmKn0qY/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAzuzM4I5TBkKDibwwqH6M0aw62yA"></a></td></tr><tr><td><p style="word-break:break-all">捷運男吐痰抹扶手引恐慌　正義女欲阻止爆衝突！@中時新聞網</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ADBjZOpWkLg?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ADBjZOpWkLg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAV_qH5UCv8bOFbet8u_a-17MHhuw" src="https://i.ytimg.com/vi/ADBjZOpWkLg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAV_qH5UCv8bOFbet8u_a-17MHhuw"></a></td></tr><tr><td><p style="word-break:break-all">【每日必看】捷運鬧事警護送回家! 女發狂持刀砍警 20220901@中天新聞</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ZZA-6vf0QzA?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ZZA-6vf0QzA/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLASaBAx_oTwrYyo-ypJiv0uE86BWw" src="https://i.ytimg.com/vi/ZZA-6vf0QzA/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLASaBAx_oTwrYyo-ypJiv0uE86BWw"></a></td></tr><tr><td><p style="word-break:break-all">陳時中拋8年「蓋好捷運」 柯文哲舉「基隆輕軌」酸：講4年都不見了【CNEWS】</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/zXpdCRBAzY8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/zXpdCRBAzY8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD7mKhRHE5knZfAOPfv56KlFKNk0w" src="https://i.ytimg.com/vi/zXpdCRBAzY8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD7mKhRHE5knZfAOPfv56KlFKNk0w"></a></td></tr><tr><td><p style="word-break:break-all">【捷運隧道探險】這次不上山而是前進臺北地心｜揭密北捷未公開隧道｜前所未見的巨大地底世界｜見證臺北捷運工程奇蹟｜帶你深入你沒見過的潛盾隧道</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/FaEqBEgLjzY?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/FaEqBEgLjzY/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAOshLwwK_vr_aZfHwzdlkzu-2Bew" src="https://i.ytimg.com/vi/FaEqBEgLjzY/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAOshLwwK_vr_aZfHwzdlkzu-2Bew"></a></td></tr><tr><td><p style="word-break:break-all">潛入捷運站最神秘區域 地下30公尺水電系統長怎樣? 萬能鑰匙解鎖所有房間｜【宅水電】</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/rD2IsyeIiuc?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/rD2IsyeIiuc/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCIZRvOyxf53vzhUmKxOdrlHMqaEQ" src="https://i.ytimg.com/vi/rD2IsyeIiuc/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCIZRvOyxf53vzhUmKxOdrlHMqaEQ"></a></td></tr><tr><td><p style="word-break:break-all">捷運也賣便當？北捷「26年未調漲」狂拚副業　網揭營運成本秘辛－民視新聞</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/Zl2Yy-PkLBk?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/Zl2Yy-PkLBk/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCHrLMWymRyNmBtX-vswllvWycO2A" src="https://i.ytimg.com/vi/Zl2Yy-PkLBk/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCHrLMWymRyNmBtX-vswllvWycO2A"></a></td></tr><tr><td><p style="word-break:break-all">【主力機真的換了！】臺北捷運C321型進出板橋站-2022/8/29</p></td></tr></table></div>
+
+      </div>
+      <div id="dv4" class="dv_row">
+         <div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/ofxMhIM_6H0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/ofxMhIM_6H0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAuwSxu2mjJACAgUgoRF-66dnrKvA" src="https://i.ytimg.com/vi/ofxMhIM_6H0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAuwSxu2mjJACAgUgoRF-66dnrKvA"></a></td></tr><tr><td><p style="word-break:break-all">消暑森林浴~烏來．紅河谷步道 (Honghe Valley Trail)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/j9AO2Eefg3o?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/j9AO2Eefg3o/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlVdpXlL8ZzXQyf4cT99DEesFNgg" src="https://i.ytimg.com/vi/j9AO2Eefg3o/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDlVdpXlL8ZzXQyf4cT99DEesFNgg"></a></td></tr><tr><td><p style="word-break:break-all">【陽明山私房夏日避暑步道 | 大崎頭步道】一睹有「巨人的階梯」之稱的水梯田！步道有樹蔭遮蔽，沿途景觀豐富！順遊坪頂古圳環狀步道，一次遊覽三條百年古圳！ | 陽明山景點、臺北景點</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/K1_7TWMTFa8?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/K1_7TWMTFa8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBV6EVr6pMgAdW4sFUMbrY3zJK6tg" src="https://i.ytimg.com/vi/K1_7TWMTFa8/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBV6EVr6pMgAdW4sFUMbrY3zJK6tg"></a></td></tr><tr><td><p style="word-break:break-all">太魯閣國家公園~小錐麓步道、砂卡噹步道 (Shakadang Trail, Taroko National Park)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/OibFSftNDMM?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/OibFSftNDMM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAGLjObDOBVkb7fj9PF6xc-yzMWQA" src="https://i.ytimg.com/vi/OibFSftNDMM/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAGLjObDOBVkb7fj9PF6xc-yzMWQA"></a></td></tr><tr><td><p style="word-break:break-all">太魯閣國家公園~太魯閣臺地步道 (Taroko Terrace Trail)</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/V_VnTulsbtI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/V_VnTulsbtI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBMTBmDoWlTGWuumUn7IQnlT4wCig" src="https://i.ytimg.com/vi/V_VnTulsbtI/hqdefault.jpg?sqp=-oaymwEcCOADEI4CSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBMTBmDoWlTGWuumUn7IQnlT4wCig"></a></td></tr><tr><td><p style="word-break:break-all">嘉義頂石棹茶之道步道</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/4dfPW5901Ps?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/4dfPW5901Ps/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCb9tjnatAHFqepwewMvSDqVzHCpw" src="https://i.ytimg.com/vi/4dfPW5901Ps/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCb9tjnatAHFqepwewMvSDqVzHCpw"></a></td></tr><tr><td><p style="word-break:break-all">《短影片》超密集的二戰防空洞~十八尖山防空洞步道</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/d-9exqn53XA?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/d-9exqn53XA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZbmKFzLHoNsG3R_NO3IvKFjm5PQ" src="https://i.ytimg.com/vi/d-9exqn53XA/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBZbmKFzLHoNsG3R_NO3IvKFjm5PQ"></a></td></tr><tr><td><p style="word-break:break-all">竹子湖青楓步道|瞬間變超級涼爽|夏天就是要去天然冷氣的地方|竹子湖環狀步道|簡單好走</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/46QBBjav_s0?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/46QBBjav_s0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAHq_dfxAS514St905dYQxgq1h7dw" src="https://i.ytimg.com/vi/46QBBjav_s0/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAHq_dfxAS514St905dYQxgq1h7dw"></a></td></tr><tr><td><p style="word-break:break-all">觀霧 榛山步道 享受森林浴 登高眺聖稜</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/tUvN-oBY8XI?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/tUvN-oBY8XI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBcGBUKKTHg2C4_3Pbxjh4JHDG5w" src="https://i.ytimg.com/vi/tUvN-oBY8XI/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBcGBUKKTHg2C4_3Pbxjh4JHDG5w"></a></td></tr><tr><td><p style="word-break:break-all">【2022高雄景點】茂林谷.羅木斯步道(羅木斯溪登山步道)｜茂林谷瀑布</p></td></tr></table></div>
+<div class="dv"><table><tr><td><a class="variousi" href="https://www.youtube.com/embed/OPvHs7LQlno?autoplay=1" target="_self"><img class="style3 lazyload" data-src="https://i.ytimg.com/vi/OPvHs7LQlno/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAm7fqp-AMC1wpoHwCNAVUvis_c9g" src="https://i.ytimg.com/vi/OPvHs7LQlno/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAm7fqp-AMC1wpoHwCNAVUvis_c9g"></a></td></tr><tr><td><p style="word-break:break-all">新竹｜觀霧森林遊樂區｜檜山巨木群步道-視覺震撼的高山森林浴#i揪團遊臺灣</p></td></tr></table></div>
+
+      </div>
+      <!--div id="dv5" class="dv_row">
+         <%dv5%>
+      </div-->
+    </div>
+
+
+    <div id="tabs-11">
+      
+            
+            <div class="article-content-inner">
+            <table style="height: 204px; width: 611px;" border="0" cellpadding="0" align="center">
+<tbody>
+<tr>
+<td style="text-align: center;">
+<p><img loading="lazy" title="/tmp/phpiuEYCq" src="https://pic.pimg.tw/densanler/1591338779-1005512918.png" alt="/tmp/phpiuEYCq" border="0"></p>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;">
+<table style="height: 40px; width: 603px;" border="1" align="center">
+<tbody>
+<tr>
+<td><span style="font-size: 12pt;">111年09月</span></td>
+<td><span style="font-size: 12pt; color: #0000ff;">3<span style="color: #0000ff; font-size: 16px;">(六)</span><br>
+10<span style="color: #0000ff; font-size: 16px;">(六)</span><br>
+17<span style="color: #0000ff; font-size: 16px;">(六)</span><br>
+17<span style="color: #0000ff; font-size: 16px;">(六)</span><br>
+24<span style="color: #0000ff; font-size: 16px;">(六)</span></span></td>
+<td style="text-align: left;"><span style="font-size: 12pt;"><span style="text-decoration: line-through;"><a href="https://densanler.pixnet.net/blog/post/48344892">(陽明山) 菜公坑山、巴拉卡山下竹子湖輕鬆行</a></span><span style="color: #ff0000;">(取消)</span><br>
+<a href="https://densanler.pixnet.net/blog/post/48344896">(金山) 魚路古道北段（擎天崗-金山磺港漁港）(中秋節)</a><br>
+<a href="https://densanler.pixnet.net/blog/post/48344904">(新店) 獅熊縱走 (專車行程)</a><br>
+<a href="https://densanler.pixnet.net/blog/post/48344908">(陽明山) 二子坪至楓樹湖 (副行程)</a><br>
+<a href="https://densanler.pixnet.net/blog/post/48344912">(礁溪) 猴洞坑瀑布消暑行</a><br></span></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td style="text-align: center;"><span style="font-family: arial,helvetica,sans-serif;"><span style="font-size: 16px;"><a href="http://densanler.pixnet.net/blog/post/32748271">參加活動<span style="color: #ff0000;">新手必讀</span>說明事項</a></span></span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span style="font-family: arial,helvetica,sans-serif;"><span style="font-size: 16px;">       <span style="font-size: 12pt; font-family: arial, helvetica, sans-serif;"><a href="http://densanler.pixnet.net/blog/post/45536775" target="_blank">加入會員方式</a>   <span style="color: #ff0000;">(自願性參加非必要)</span></span></span></span></td>
+</tr>
+<tr>
+<td style="text-align: center;"><span style="font-family: arial,helvetica,sans-serif;"><span style="font-size: 16px;"><span style="color: #0000ff; text-align: center;"><span style="color: #0000ff; text-align: center;"><span style="color: #0000ff; text-align: center;">◎對行程上有疑問建議請上<span style="background-color: #ccffff;"><a href="https://www.facebook.com/groups/417427354977039/" target="_blank">登山樂臉書社團</a><span style="background-color: #ffffff;">該活動內</span></span>回應</span><span style="color: #0000ff; text-align: center;">◎</span></span></span></span></span></td>
+</tr>
+</tbody>
+</table>
+
+                                    </div>
+        </div> 
+    </div>
+  </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js" type="text/javascript"></script>
+
+
+
+

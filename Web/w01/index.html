@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://ck0630.github.io/Scripts/jquery.mobile-1.4.5.min.css" />
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.mobile-1.4.5.min.js"></script>
+    <style type="text/css">
+      .dv_row {
+        width: 25%;
+        float: left;
+      }
+
+      .dv_row1 {
+        width: 40%;
+        float: left;
+      }
+
+      .dv_row2 {
+        width: 20%;
+        float: left;
+      }
+
+      .dv_row3 {
+        width: 20%;
+        float: left;
+      }
+
+      .dv_row4 {
+        width: 20%;
+        float: left;
+      }
+
+      #dv0 {
+        padding: 1px 7px;
+        margin: 0px;
+        border-radius: 12px;
+      }
+
+      .dv {
+        padding: 1px 7px;
+        margin: 0px;
+        text-align: center;
+        border-radius: 12px;
+      }
+
+      .style3 {
+        width: 100%;
+        height: auto;
+        min-height: 100px;
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+        -webkit-transition: all .2s ease-in-out;
+        -moz-transition: all .2s ease-in-out;
+        -o-transition: all .2s ease-in-out;
+        -ms-transition: all .2s ease-in-out;            
+      }
+
+      a {
+          color: #595A90;
+          text-decoration: none;
+      }
+
+      .ui-btn {
+          padding: .4em 1em;
+      }  
+
+      p, span {
+         font-weight: bold;
+         color: #1010A8;
+         margin: 0px;
+      }  
+
+    </style>
+    <script>
+
+        var brColor = "#E4F6FF"
+
+        $(window).load(function() {
+            var url=window.localStorage["url"];
+            $(".variousi[href='"+url+"']").parent().css("background-color", brColor);
+            var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+            $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());
+        });
+
+        $(document).ready(function(){
+            $(".variousi").click(function(){
+              //recover last pos
+              var url=window.localStorage["url"];
+              $(".variousi[href='"+url+"']").parent().css("background-color", "white");
+              //remember current pos
+              url = $(this).attr("href");
+              window.localStorage["url"] = url; 
+              $(this).parent().css("background-color", brColor);
+              window.open(url, "_self");
+              return false;
+            });
+            var config = {
+              rootMargin: '0px 0px 50px 0px',
+              threshold: 0
+            };
+            var observer = new IntersectionObserver(function(entries, self) {
+              entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                  entry.target.src=entry.target.dataset.src;
+                  self.unobserve(entry.target);
+                }
+              });
+            }, config);
+            var imgs = document.querySelectorAll('[data-src]');
+            imgs.forEach(img => {
+              observer.observe(img);
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+   <div class="dv"><p>Video</p></div>
+   <div id="dv0_1" class="dv_row1">
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="javascript:window.open('html_discovery.htm?_='+Date.now(), target='_self')">discovery</a></div>
+   </div>
+   <div id="dv0_2" class="dv_row2">
+        <div class="dv"><a href="javascript:window.open('html_climb.htm?_='+Date.now(), target='_self')" class="variousi ui-btn ui-shadow ui-corner-all">登</a></div>
+   </div>
+   <div id="dv0_3" class="dv_row3">
+        <div class="dv"><a href="javascript:window.open('html_anim.htm?_='+Date.now(), target='_self')" class="variousi ui-btn ui-shadow ui-corner-all">動</a></div>
+   </div>
+   <div id="dv0_4" class="dv_row4">
+        <div class="dv"><a href="javascript:window.open('html_discovery2.htm?_='+Date.now(), target='_self')" class="variousi ui-btn ui-shadow ui-corner-all">說</a></div>
+   </div>
+   <div id="dv1" class="dv_row">
+        <div class="dv"><a href="https://777tv.app/"><p>Tiktok</p></a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_new.htm">最新</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_science.htm">科幻</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_action.htm">動作</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_joke.htm">喜劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_love.htm">愛情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_scenario.htm">劇情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_war.htm">戰爭</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_horror.htm">恐怖</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_cartoon.htm">動畫</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_anime.htm">動漫</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tvshow.htm">綜藝</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_us.htm">美劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_kj.htm">韓劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_tw.htm">台劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_cn.htm">陸劇</a></div>
+   </div>     
+   <div id="dv2" class="dv_row">
+        <div class="dv"><a href="https://www.nunuyy1.top/"><p>Nunuyy</p></a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_new.htm">最新</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_science.htm">科幻</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_fantasia.htm">奇幻</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_action.htm">動作</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_joke.htm">喜劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_love.htm">愛情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_scenario.htm">劇情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_war.htm">戰爭</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_horror.htm">恐怖</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_anime.htm">動漫</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_documentary.htm">記錄</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_tvshow.htm">綜藝</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_tv_us.htm">美劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_tv_kj.htm">韓劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_tv_tw.htm">台劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_tv_cn.htm">陸劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_suspense.htm">懸疑</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_disaster.htm">災難</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_adventure.htm">冒險</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="nunuyy_martial.htm">武俠</a></div>
+   </div>
+   <div id="dv3" class="dv_row">
+        <div class="dv"><a href="https://gimytv.app"><p>Gimy</p></a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_new.htm">最新</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_science.htm">科幻</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_fantasia.htm">奇幻</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_action.htm">動作</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_love.htm">愛情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_scenario.htm">劇情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_war.htm">戰爭</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_horror.htm">恐怖</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_anime.htm">動漫</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tvshow.htm">綜藝</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tv_us.htm">美劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tv_kr.htm">韓劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tv_tw.htm">台劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tv_cn.htm">陸劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tv_jp.htm">日劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="gimy_tv_other.htm">其他</a></div>
+   </div>     
+   <div id="dv4" class="dv_row">
+        <div class="dv">
+           <a href="https://wetv.vip/zh-tw"><span>We</span></a>&nbsp;
+           <a href="https://www.le.com"><span>Le</span></a>
+        </div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_new.htm">最新</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_fantasia.htm">奇幻</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_action.htm">動作</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_joke.htm">喜劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_love.htm">愛情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_scenario.htm">劇情</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_anime.htm">動漫</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_tvshow.htm">綜藝</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_tv_kj.htm">韓劇</a></div>
+        <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_tv_cn.htm">陸劇</a></div>
+   </div>
+</body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js" type="text/javascript"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

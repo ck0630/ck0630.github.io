@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html><head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://mkoryak.github.io/floatThead/dist/jquery.floatThead.js"></script>
+    <style type="text/css">
+      .dv_row {
+        width: 25%;
+        float: left;
+      }
+
+      .dv {
+        width: 90%;
+        padding: 5px;
+        margin: 5px;
+        border: 1px solid #ccc;
+        border-radius: 22px;
+        text-align: center;
+      }
+
+      .style3 {
+        width: 100%;
+        height: auto;
+        min-height: 100px;
+        border: 0;
+        border-radius: 22px;
+        box-shadow: 3px 2px 6px rgba(0, 0, 0, .4);
+        -webkit-transition: all .2s ease-in-out;
+        -moz-transition: all .2s ease-in-out;
+        -o-transition: all .2s ease-in-out;
+        -ms-transition: all .2s ease-in-out;            
+      }
+
+      .dv a {
+          color: #595A90;
+          text-decoration: none;
+      }
+
+    </style>
+    <script>
+
+        $(window).load(function() {
+            var url=window.localStorage["url"];
+            $(".variousi[href='"+url+"']").parent().css("background-color", "yellow");
+            var winyy=$(".variousi[href='"+url+"']").parent().offset().top || 0;
+            $(window).scrollTop(winyy-$(".variousi[href='"+url+"']").parent().height());
+        });
+
+        $(document).ready(function(){
+            $(".variousi").click(function(){
+              //recover last pos
+              var url=window.localStorage["url"];
+              $(".variousi[href='"+url+"']").parent().css("background-color", "white");
+              //remember current pos
+              url = $(this).attr("href");
+              window.localStorage["url"] = url; 
+              $(this).parent().css("background-color", "yellow");
+              window.open(url, "_self");
+              return false;
+            });
+            var config = {
+              rootMargin: '0px 0px 50px 0px',
+              threshold: 0
+            };
+            var observer = new IntersectionObserver(function(entries, self) {
+              entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                  entry.target.src=entry.target.dataset.src;
+                  self.unobserve(entry.target);
+                }
+              });
+            }, config);
+            var imgs = document.querySelectorAll('[data-src]');
+            imgs.forEach(img => {
+              observer.observe(img);
+            });
+
+        });
+
+    </script>
+</head>
+<body>
+   <div id="dv0">
+        <div id="dv1" class="dv_row">
+             <div class="dv">tiktok</div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_new.htm">最新</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_science.htm">科幻</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_fantasia.htm">奇幻</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_action.htm">動作</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_joke.htm">喜劇</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_love.htm">愛情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_scenario.htm">劇情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_war.htm">戰爭</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_horror.htm">恐怖</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_anime.htm">動漫</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_cartoon.htm">動畫</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tvshow.htm">綜藝</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_us.htm">電視劇us</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_kj.htm">電視劇kj</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_tw.htm">電視劇tw</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="tiktok_tv_cn.htm">電視劇cn</a></div>
+        </div>     
+        <div id="dv2" class="dv_row">
+             <div class="dv">nunuyy</div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_new.htm">最新</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_science.htm">科幻</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_action.htm">動作</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_joke.htm">喜劇</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_love.htm">愛情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_scenario.htm">劇情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_war.htm">戰爭</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_horror.htm">恐怖</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_anime.htm">動漫</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_cartoon.htm">動畫</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_tvshow.htm">綜藝</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_tv_us.htm">電視劇us</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_tv_kj.htm">電視劇kj</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_tv_tw.htm">電視劇tw</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="pites_tv_cn.htm">電視劇cn</a></div>
+        </div>
+        <div id="dv3" class="dv_row">
+             <div class="dv">dyhoo</div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_new.htm">最新</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_science.htm">科幻</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_action.htm">動作</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_joke.htm">喜劇</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_love.htm">愛情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_war.htm">戰爭</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_horror.htm">恐怖</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_anime.htm">動漫</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_tvshow.htm">綜藝</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_tv_us.htm">電視劇us</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_tv_kj.htm">電視劇kj</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_tv_tw.htm">電視劇tw</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="dyhoo_tv_cn.htm">電視劇cn</a></div>
+        </div>     
+        <div id="dv4" class="dv_row">
+             <div class="dv">wetv</div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_new.htm">最新</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_fantasia.htm">奇幻</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_action.htm">動作</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_joke.htm">喜劇</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_love.htm">愛情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_scenario.htm">劇情</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_anime.htm">動漫</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_tvshow.htm">綜藝</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_tv_kj.htm">電視劇kj</a></div>
+             <div class="dv"><a class="variousi ui-btn ui-shadow ui-corner-all" href="wetv_tv_cn.htm">電視劇cn</a></div>
+        </div>
+</body>
+</html>
+
+
+

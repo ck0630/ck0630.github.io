@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://ck0630.github.io/Scripts/jquery.mobile-1.4.5.min.css" />
+  <script src="https://ck0630.github.io/Scripts/jquery-1.11.0.min.js"></script>
+  <script src="https://ck0630.github.io/Scripts/myscript.js"></script>
+  <script src="https://ck0630.github.io/Scripts/jquery.mobile-1.4.5.min.js"></script>
+  <script>
+     var ary=[];
+     $.getJSON("../w02/html_anim.json?_="+Math.floor(Date.now() / 1000), function(data) {
+       $.each(data, function(key, value) {
+         if (value.site=="youtube") {
+           ary.push("https://www.youtube.com/results?search_query="+encodeURIComponent(value.title)+"&sp=EgIIBA%253D%253D");
+         } else 
+         if (value.site=="google") {
+           ary.push("https://www.google.com/search?q="+encodeURIComponent(value.title));
+         } else 
+         if (value.site=="gimy") {
+           ary.push("https://gimy.app/search/-------------.html?wd="+encodeURIComponent(value.title)+"&submit=");
+         }
+         $("#p2").append(
+           '<p><a onclick="open_win('+ key +');" class="ui-btn ui-shadow ui-corner-all">'+value.title+'</a></p>'
+         );
+       });
+     });
+
+     function open_win(index) {
+       window.open(ary[index], "_self");
+     }
+  </script>
+</head>
+<body>
+  <div data-role="page" id="p1">
+    <div data-role="header">
+      <h1>動畫</h1>
+    </div> 
+    <div data-role="main" class="ui-content" id="p2">
+    </div>
+  </div><!-- /page -->
+ </body>
+</html>
+<script src="https://ck0630.github.io/Scripts/hide_logo.js"></script>
+
+
+
