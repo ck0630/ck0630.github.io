@@ -1,8 +1,9 @@
-//if (is_chrome_android) {
+﻿//if (is_chrome_android) {
 //  $("div[style*='display:block !important']").hide();
 //}
 //$("div:contains('condemn war.')").hide();
 
+/*
 function hide_it() {
   $("div[style*='display:block !important']").hide();
 }
@@ -23,3 +24,4 @@ if (getCookie("is_taiwan")=="true") {
 } else {
   check_taiwan();
 }
+*/
